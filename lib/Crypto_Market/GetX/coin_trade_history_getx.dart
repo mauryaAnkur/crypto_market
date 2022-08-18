@@ -12,10 +12,10 @@ class TradeHistoryController extends GetxController {
 
   static TradeHistoryController get to => Get.put(TradeHistoryController());
 
-  List<CoinTradeHistory> tradeHistoryList = <CoinTradeHistory>[].obs;
+  List<TradeHistory> tradeHistoryList = <TradeHistory>[].obs;
   int itemCount = 20;
 
-  addData(CoinTradeHistory coinTradeHistory) {
+  addData(TradeHistory coinTradeHistory) {
     tradeHistoryList.add(coinTradeHistory);
 
     if(tradeHistoryList.length > itemCount) {
@@ -56,7 +56,7 @@ class TradeHistoryController extends GetxController {
     );
     result.listen((event) {
       var snapshot = jsonDecode(event);
-      addData(CoinTradeHistory(
+      addData(TradeHistory(
           date: snapshot['T'] == null ? "" : DateTime.fromMillisecondsSinceEpoch(snapshot['T']).toString().split(' ')[1],
           type: snapshot['m'] == true ? "Buy" : "Sell",
           price: snapshot['p'] == null ? "" : double.parse(snapshot['p'].toString()).toString(),

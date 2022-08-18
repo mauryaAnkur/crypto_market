@@ -1,7 +1,9 @@
 
-class CoinTradeHistory {
-  String date,type,price,amount;
-  CoinTradeHistory({
+class TradeHistory {
+
+  String date, type, price, amount;
+
+  TradeHistory({
     required this.type,
     required this.price,
     required this.amount,
@@ -9,4 +11,4 @@ class CoinTradeHistory {
   });
 }
 
-List<CoinTradeHistory> coinTradeHistoryList = [];
+List<TradeHistory> tradeHistoryList = [];

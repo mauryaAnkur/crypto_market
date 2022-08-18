@@ -20,28 +20,28 @@ import '../Candle Chart/utils/indicators/weighted_moving_average.dart';
 import '../Model/coin_model.dart';
 
 
-class CoinGraphScreen extends StatefulWidget {
+class CoinGraph extends StatefulWidget {
   static const id = '/coinGraph';
 
   final Coin coinData;
   final String listedCoinGraphUrl;
   final double inrRate;
-  final double chartHeight;
+  // final double chartHeight;
 
-  const CoinGraphScreen({
+  const CoinGraph({
     Key? key,
     required this.coinData,
     this.listedCoinGraphUrl = '',
     required this.inrRate,
-    required this.chartHeight,
+    // required this.chartHeight,
   }) : super(key: key);
 
   @override
-  State<CoinGraphScreen> createState() => _CoinGraphScreenState();
+  State<CoinGraph> createState() => _CoinGraphState();
 }
 
 
-class _CoinGraphScreenState extends State<CoinGraphScreen> {
+class _CoinGraphState extends State<CoinGraph> {
 
   bool isCandle = false;
   bool showVolume = false;
@@ -473,7 +473,7 @@ class _CoinGraphScreenState extends State<CoinGraphScreen> {
         builder: (context, snapshot) {
           candles.isNotEmpty ? updateCandlesFromSnapshot(snapshot) : null;
           return Container(
-            height: widget.chartHeight,
+            // height: widget.chartHeight,
             color: Colors.green,
             margin: EdgeInsets.symmetric(horizontal: width * 0.02,),
             child:

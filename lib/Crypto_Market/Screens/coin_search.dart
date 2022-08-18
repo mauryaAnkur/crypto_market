@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../GetX/all_coin_getx.dart';
 import '../Model/coin_model.dart';
 
-class SearchScreen extends StatefulWidget {
+class CoinSearch extends StatefulWidget {
 
   final List<Coin> coinsList;
   final List<String> currencyList;
@@ -19,7 +19,7 @@ class SearchScreen extends StatefulWidget {
   final double? cardPercentageWidth;
   final Function(BuildContext, Coin)? onSearchCoinTap;
 
-  const SearchScreen({
+  const CoinSearch({
     Key? key,
     required this.coinsList,
     required this.currencyList,
@@ -34,10 +34,10 @@ class SearchScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<CoinSearch> createState() => _CoinSearchState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _CoinSearchState extends State<CoinSearch> {
 
   bool isDark = false;
 
@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isSearching = false;
   String _searchText = "";
 
-  _SearchScreenState() {
+  _CoinSearchState() {
     _searchQuery.addListener(() {
       if (_searchQuery.text.isEmpty) {
         setState(() {

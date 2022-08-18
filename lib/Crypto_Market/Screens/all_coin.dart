@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../GetX/all_coin_getx.dart';
 import '../Model/coin_model.dart';
 
-class AllCoinScreen extends StatelessWidget {
+class AllCoin extends StatelessWidget {
 
   final List<Coin> coinsList;
   final List<String> currencyList;
@@ -39,7 +39,7 @@ class AllCoinScreen extends StatelessWidget {
   final Function(BuildContext, Coin)? onCoinTap;
 
 
-  AllCoinScreen({
+  AllCoin({
     Key? key,
 
     required this.coinsList,

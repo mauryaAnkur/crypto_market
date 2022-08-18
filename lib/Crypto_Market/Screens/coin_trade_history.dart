@@ -11,14 +11,14 @@ import '../GetX/coin_trade_history_getx.dart';
 import '../Model/coin_model.dart';
 import '../Model/coin_trade_history_model.dart';
 
-class CoinTradeHistoryScreen extends StatefulWidget {
+class CoinTradeHistory extends StatefulWidget {
 
   final Coin coinData;
   final String listedCoinTradeHistoryAPIUrl;
   final int itemCount;
   final double inrRate;
 
-  const CoinTradeHistoryScreen({
+  const CoinTradeHistory({
     Key? key,
     required this.coinData,
     this.listedCoinTradeHistoryAPIUrl = '',
@@ -27,10 +27,10 @@ class CoinTradeHistoryScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CoinTradeHistoryScreen> createState() => _CoinTradeHistoryScreenState();
+  State<CoinTradeHistory> createState() => _CoinTradeHistoryState();
 }
 
-class _CoinTradeHistoryScreenState extends State<CoinTradeHistoryScreen> {
+class _CoinTradeHistoryState extends State<CoinTradeHistory> {
 
   final ScrollController _scrollController = ScrollController();
 
@@ -49,7 +49,7 @@ class _CoinTradeHistoryScreenState extends State<CoinTradeHistoryScreen> {
     var data = json.decode(response.body);
 
     for(var i=0; i<data['data'].length; i++) {
-      coinTradeHistoryList.add(CoinTradeHistory(
+      tradeHistoryList.add(TradeHistory(
           date: data['data'][i]['T'] == null ? "" : DateTime.fromMillisecondsSinceEpoch(int.parse(data['data'][i]['T'].toString())).toString().split(' ')[1],
           type: data['data'][i]['m'] == true ? "Buy" : "Sell",
           price: data['data'][i]['p'] == null ? "" : double.parse(data['data'][i]['p'].toString()).toString(),
@@ -94,7 +94,7 @@ class _CoinTradeHistoryScreenState extends State<CoinTradeHistoryScreen> {
   @override
   void dispose() {
     channelHome.sink.close();
-    coinTradeHistoryList.clear();
+    tradeHistoryList.clear();
     super.dispose();
   }
 
@@ -178,9 +178,9 @@ class _CoinTradeHistoryScreenState extends State<CoinTradeHistoryScreen> {
                     shrinkWrap: true,
                     primary: false,
                     // reverse: true,
-                    itemCount: coinTradeHistoryList.length,
+                    itemCount: tradeHistoryList.length,
                     itemBuilder: (BuildContext ctx, int i) {
-                      return _orderHistory(coinTradeHistoryList[i]);
+                      return _orderHistory(tradeHistoryList[i]);
                     }
                 ) : StreamBuilder(
                     // stream: channelHome.stream,
@@ -227,7 +227,7 @@ class _CoinTradeHistoryScreenState extends State<CoinTradeHistoryScreen> {
     );
   }
 
-  Widget _orderHistory(CoinTradeHistory item) {
+  Widget _orderHistory(TradeHistory item) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     WidgetsBinding.instance

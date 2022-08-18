@@ -10,13 +10,13 @@ import 'package:http/http.dart' as http;
 import '../Model/coin_model.dart';
 import '../Model/coin_order_volume_model.dart';
 
-class CoinOrderBookScreen extends StatefulWidget {
+class CoinOrderVolume extends StatefulWidget {
 
   final Coin coinData;
   final String listedCoinOrderBookUrl;
   final double inrRate;
 
-  const CoinOrderBookScreen({
+  const CoinOrderVolume({
     Key? key,
     required this.coinData,
     this.listedCoinOrderBookUrl = '',
@@ -24,10 +24,10 @@ class CoinOrderBookScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CoinOrderBookScreen> createState() => _CoinOrderBookScreenState();
+  State<CoinOrderVolume> createState() => _CoinOrderVolumeState();
 }
 
-class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
+class _CoinOrderVolumeState extends State<CoinOrderVolume> {
 
 
   getListedCoinOrderVolume() async {
@@ -52,12 +52,10 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
         i < data['data']['asks'].length ? asks.add(double.parse(data['data']['asks'][i][1])) : null;
         buyLargeValue = buys.reduce(max) > asks.reduce(max) ? buys.reduce(max) : asks.reduce(max);
 
-        coinOrderBookBuyList.insert(i, OrderVolume(
+        coinOrderVolumeBuyList.insert(i, OrderVolume(
           number: i.toString(),
           price: double.parse(data['data']['bids'][i][0].toString()).toString(),
-          value: coinOrderBookBuyList.isEmpty
-              ? double.parse(data['data']['bids'][i][1].toString()).toString()
-              : (double.parse(data['data']['bids'][i][1].toString()) + double.parse(coinOrderBookBuyList.elementAt(coinOrderBookBuyList.length - 1).value)).toString(),
+          value: double.parse(data['data']['bids'][i][1].toString()).toString(),
           percent: (double.parse(data['data']['bids'][i][1].toString()) / buyLargeValue).toString(),
         ));
 
@@ -67,12 +65,10 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
       for (int i = 0; i < data['data']['asks'].length; i++) {
         sellLargeValue = buys.isNotEmpty ? buys.reduce(max) > asks.reduce(max) ? buys.reduce(max) : asks.reduce(max) : 1.00;
 
-        coinOrderBookSellList.insert(i, OrderVolume(
+        coinOrderVolumeSellList.insert(i, OrderVolume(
           number: i.toString(),
           price: double.parse(data['data']['asks'][i][0].toString()).toString(),
-          value: coinOrderBookSellList.isEmpty
-              ? double.parse(data['data']['asks'][i][1].toString()).toString()
-              : (double.parse(data['data']['asks'][i][1].toString()) + double.parse(coinOrderBookSellList.elementAt(coinOrderBookSellList.length - 1).value)).toString(),
+          value: double.parse(data['data']['asks'][i][1].toString()).toString(),
           percent: (double.parse(data['data']['asks'][i][1].toString()) / sellLargeValue).toString(),
         ));
 
@@ -123,8 +119,8 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
 
   @override
   void dispose() {
-    coinOrderBookBuyList = [];
-    coinOrderBookSellList = [];
+    coinOrderVolumeBuyList = [];
+    coinOrderVolumeSellList = [];
     channelHome.sink.close();
     super.dispose();
   }
@@ -179,7 +175,7 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
               ),
             ),
           ),
-          SizedBox(height: height * 0.005),
+          SizedBox(height: height * 0.02),
           widget.coinData.coinListed
               ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,10 +186,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   primary: false,
-                  padding: EdgeInsets.zero,
-                  itemCount: coinOrderBookBuyList.length < 20 ? coinOrderBookBuyList.length : 20,
+                  itemCount: coinOrderVolumeBuyList.length < 20 ? coinOrderVolumeBuyList.length : 20,
                   itemBuilder: (BuildContext ctx, int i) {
-                    return _buyAmount(mediaQuery, coinOrderBookBuyList[i]);
+                    return _buyAmount(mediaQuery, coinOrderVolumeBuyList[i]);
                   },
                 ),
               ),
@@ -203,10 +198,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   primary: false,
-                  padding: EdgeInsets.zero,
-                  itemCount: coinOrderBookSellList.length < 20 ? coinOrderBookSellList.length : 20,
+                  itemCount: coinOrderVolumeSellList.length < 20 ? coinOrderVolumeSellList.length : 20,
                   itemBuilder: (BuildContext ctx, int i) {
-                    return _amountSell(mediaQuery, coinOrderBookSellList[i]);
+                    return _amountSell(mediaQuery, coinOrderVolumeSellList[i]);
                   },
                 ),
               ),
@@ -227,10 +221,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           primary: false,
-                          padding: EdgeInsets.zero,
-                          itemCount: coinOrderBookBuyList.length,
+                          itemCount: coinOrderVolumeBuyList.length,
                           itemBuilder: (BuildContext ctx, int i) {
-                            return _buyAmount(mediaQuery, coinOrderBookBuyList[i]);
+                            return _buyAmount(mediaQuery, coinOrderVolumeBuyList[i]);
                           },
                         ),
                       ),
@@ -241,10 +234,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           primary: false,
-                          padding: EdgeInsets.zero,
-                          itemCount: coinOrderBookSellList.length,
+                          itemCount: coinOrderVolumeSellList.length,
                           itemBuilder: (BuildContext ctx, int i) {
-                            return _amountSell(mediaQuery, coinOrderBookSellList[i]);
+                            return _amountSell(mediaQuery, coinOrderVolumeSellList[i]);
                           },
                         ),
                       ),
@@ -254,7 +246,6 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                   return Center(child: Text(snapshot.error.toString()));
                 }
                 else if (snapshot.connectionState == ConnectionState.active && !snapshot.data.toString().contains("result")) {
-
                   var item = json.decode(snapshot.data as String);
                   List<double> buys=[];
                   List<double> asks=[];
@@ -267,21 +258,17 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                       asks.add(double.parse(item['asks'][i][1]));
                       largeValue = buys.reduce(max) > asks.reduce(max) ? buys.reduce(max) : asks.reduce(max);
 
-                      coinOrderBookBuyList.insert(i, OrderVolume(
+                      coinOrderVolumeBuyList.insert(i, OrderVolume(
                         number: i.toString(),
                         price: double.parse(item['bids'][i][0]).toString(),
-                        value: coinOrderBookBuyList.isEmpty
-                            ? double.parse(item['bids'][i][1].toString()).toString()
-                            : (double.parse(item['bids'][i][1].toString()) + double.parse(coinOrderBookBuyList.elementAt(coinOrderBookBuyList.length - 1).value)).toString(),
+                        value: double.parse(item['bids'][i][1].toString()).toString(),
                         percent: (double.parse(item['bids'][i][1].toString()) / largeValue).toString(),
                       ));
 
-                      coinOrderBookSellList.insert(i, OrderVolume(
+                      coinOrderVolumeSellList.insert(i, OrderVolume(
                         number: i.toString(),
                         price: double.parse(item['asks'][i][0]).toString(),
-                        value: coinOrderBookSellList.isEmpty
-                            ? double.parse(item['asks'][i][1].toString()).toString()
-                            : (double.parse(item['asks'][i][1].toString()) + double.parse(coinOrderBookSellList.elementAt(coinOrderBookSellList.length - 1).value)).toString(),
+                        value: double.parse(item['asks'][i][1].toString()).toString(),
                         percent: (double.parse(item['asks'][i][1].toString()) / largeValue).toString(),
                       ));
 
@@ -295,10 +282,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,
-                            padding: EdgeInsets.zero,
-                            itemCount: coinOrderBookBuyList.length < 20 ? coinOrderBookBuyList.length : 20,
+                            itemCount: coinOrderVolumeBuyList.length < 20 ? coinOrderVolumeBuyList.length : 20,
                             itemBuilder: (BuildContext ctx, int i) {
-                              return _buyAmount(mediaQuery, coinOrderBookBuyList[i]);
+                              return _buyAmount(mediaQuery, coinOrderVolumeBuyList[i]);
                             },
                           ),
                         ),
@@ -308,10 +294,9 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             primary: false,
-                            padding: EdgeInsets.zero,
-                            itemCount: coinOrderBookSellList.length < 20 ? coinOrderBookSellList.length : 20,
+                            itemCount: coinOrderVolumeSellList.length < 20 ? coinOrderVolumeSellList.length : 20,
                             itemBuilder: (BuildContext ctx, int i) {
-                              return _amountSell(mediaQuery, coinOrderBookSellList[i]);
+                              return _amountSell(mediaQuery, coinOrderVolumeSellList[i]);
                             },
                           ),
                         ),
@@ -345,6 +330,7 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               Text(
                 item.value.toString(),
                 style: TextStyle(fontSize: 12.0,
@@ -353,7 +339,7 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
               Text(
                 widget.coinData.coinPairWith == "INR"
                     ? price.toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency))
-                    : double.parse(item.price.toString()).toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency)),
+                    : double.parse(item.price).toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency)),
                 style: TextStyle(
                     color: Colors.green[600],
                     fontWeight: FontWeight.w600,
@@ -380,7 +366,7 @@ class _CoinOrderBookScreenState extends State<CoinOrderBookScreen> {
               Text(
                 widget.coinData.coinPairWith == "INR"
                     ? price.toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency))
-                    : double.parse(item.price.toString()).toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency)),
+                    : double.parse(item.price).toStringAsFixed(int.parse(widget.coinData.coinDecimalCurrency)),
                 style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.w600,
