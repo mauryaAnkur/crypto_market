@@ -1,36 +1,68 @@
 <!-- 
+
 This README describes the package. If you publish this package to pub.dev,
+
 this README's contents appear on the landing page for your package.
 
 For information about how to write a good package README, see the guide for
+
 [writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
 
 For general information about developing packages, see the Dart guide for
+
 [creating packages](https://dart.dev/guides/libraries/create-library-packages)
+
 and the Flutter guide for
+
 [developing packages and plugins](https://flutter.dev/developing-packages). 
+
 -->
 
 TODO: Put a short description of the package here that helps potential users
+
 know whether this package might be useful for them.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+[comment]: <> (TODO: List what your package can do. Maybe include images, gifs, or videos.)
+![All Coins](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/allCoin.jpg?token=GHSAT0AAAAAABXRIUL4S3NYW57BKJKZLB2GYX7LX3A)
+![Coin Graph](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/coinGraph.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA)
+![Coin Order Volume](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderBook.jpg?token=GHSAT0AAAAA)
+![Coin Order Book](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderVolume.jpg?token=GHSAT0AAAAAABXRIUL5AUNZBRWKTPH3OCREYX7MLQQ)
+![Coin Trade History](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/tradeHistory.jpg?token=GHSAT0AAAAAABXRIUL5FHHMFMFU4QR62ARUYX7ML2A)
+![Coin Search](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/searchCoin.jpg?token=GHSAT0AAAAAABXRIUL4HFF6SJDM4M72K5OQYX7L3JQ)
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+[comment]: <> (TODO: List prerequisites and provide or point to information on how to)
 
-## Usage
+[comment]: <> (start using the package.)
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+[comment]: <> (## Usage)
 
-```dart
-const like = 'sample';
+[comment]: <> (TODO: Include short and useful examples for package users. Add longer examples)
+
+[comment]: <> (to `/example` folder. )
+
+## All Coin
 ```
+ AllCoin(
+coinsList: coinsList,
+currencyList: currencyList,
+tickerList: tickerList,
+showWishlistAtFirst: false,
+currencyTabSelectedItemColor: Colors.red,
+currencyTabBackgroundColor: Colors.transparent,
+currencyTabHeight: 100,
+showHeading: true,
+inrRate: 77.0,
+onCoinTap: (ctx, coin) {
+///  ------  ///
+},
+);
+```
+
+## Coin Graph
 
 ## Additional information
 
