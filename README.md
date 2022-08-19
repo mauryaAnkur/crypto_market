@@ -20,7 +20,6 @@ and the Flutter guide for
 
 ### Crypto Market is a highly customizable Flutter library that supports Coin Graph, Order Book, Order Volume, and Trade History.
 
-know whether this package might be useful for them.
 
 ## Features
 
@@ -32,13 +31,13 @@ know whether this package might be useful for them.
 ![Coin Trade History](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/tradeHistory.jpg?token=GHSAT0AAAAAABXRIUL5FHHMFMFU4QR62ARUYX7ML2A)
 ![Coin Search](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/searchCoin.jpg?token=GHSAT0AAAAAABXRIUL4HFF6SJDM4M72K5OQYX7L3JQ)
 
-## Getting started
+[comment]: <> (## Getting started)
 
 [comment]: <> (TODO: List prerequisites and provide or point to information on how to)
 
 [comment]: <> (start using the package.)
 
-[comment]: <> (## Usage)
+## Usage
 
 [comment]: <> (TODO: Include short and useful examples for package users. Add longer examples)
 
