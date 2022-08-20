@@ -4,7 +4,7 @@
 ## Features
 
 
-![All Coins](assets/allCoin.jpg 250x200)
+![All Coins](assets/allCoin.jpg =250x200)
 ![Coin Graph](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/coinGraph.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA)
 ![Coin Order Volume](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderBook.jpg?token=GHSAT0AAAAA)
 ![Coin Order Book](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderVolume.jpg?token=GHSAT0AAAAAABXRIUL5AUNZBRWKTPH3OCREYX7MLQQ)
