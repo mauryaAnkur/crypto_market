@@ -1,10 +1,10 @@
 name: crypto_market
 description: Crypto Market is a highly customizable Flutter library that supports Coin Graph, Order Book, Order Volume, and Trade History.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/mauryaAnkur/crypto_market.git
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
