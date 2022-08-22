@@ -21,19 +21,16 @@ import '../Model/coin_model.dart';
 
 
 class CoinGraph extends StatefulWidget {
-  static const id = '/coinGraph';
 
   final Coin coinData;
   final String listedCoinGraphUrl;
   final double inrRate;
-  // final double chartHeight;
 
   const CoinGraph({
     Key? key,
     required this.coinData,
     this.listedCoinGraphUrl = '',
     required this.inrRate,
-    // required this.chartHeight,
   }) : super(key: key);
 
   @override
@@ -473,7 +470,6 @@ class _CoinGraphState extends State<CoinGraph> {
         builder: (context, snapshot) {
           candles.isNotEmpty ? updateCandlesFromSnapshot(snapshot) : null;
           return Container(
-            // height: widget.chartHeight,
             color: Colors.green,
             margin: EdgeInsets.symmetric(horizontal: width * 0.02,),
             child:
@@ -493,7 +489,6 @@ class _CoinGraphState extends State<CoinGraph> {
               isTapShowInfoDialog: false,
               materialInfoDialog: true,
               showInfoDialog: true,
-              // maDayList: [1, 100, 1000],
               flingCurve: Curves.bounceInOut,
             ),
 
@@ -577,9 +572,6 @@ class _CoinGraphState extends State<CoinGraph> {
             //       //   ),
             //       // )
             //     ],
-            //     // onLoadMoreCandles: () async {
-            //     //   candles.addAll(candles.sublist(0, 100));
-            //     // },
             //   ),
             // ),
 

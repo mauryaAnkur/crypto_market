@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       coinsList: coinsList,
       currencyList: currencyList,
       tickerList: tickerList,
+      wishlistCoinsList: wishlistCoinsList,
       showWishlistAtFirst: false,
       currencyTabSelectedItemColor: Colors.red,
       currencyTabBackgroundColor: Colors.transparent,
@@ -112,6 +113,10 @@ List<Coin> coinsList = [
   Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
+];
+
+List<Coin> wishlistCoinsList = [
+  Coin(coinID: '1', coinImage: 'https://', coinName: 'Ethereum', coinShortName: 'ETH', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'ETHUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false)
 ];
 
 List<String> currencyList = [

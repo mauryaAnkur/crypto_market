@@ -1,3 +1,4 @@
+// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,10 @@ class AllCoin extends StatelessWidget {
   final List<String> currencyList;
   final List<String> tickerList;
   final double inrRate;
+
+  /// wishlist
+  final List<Coin> wishlistCoinsList;
+
 
   ///
   final bool showWishlistAtFirst;
@@ -47,6 +52,8 @@ class AllCoin extends StatelessWidget {
     required this.tickerList,
     required this.inrRate,
 
+    required this.wishlistCoinsList,
+
     this.showWishlistAtFirst = true,
 
     this.currencyTabHeight,
@@ -72,23 +79,19 @@ class AllCoin extends StatelessWidget {
   }) : super(key: key);
 
 
-  // bool isP2PSelected = false;
-
   List tabItems = [];
   int selectedTabIndex = 0;
-  // int selectedTabIndex = CoinController.to.selectedTabIndex.value;
 
   tabItemsList() {
     tabItems.addAll(currencyList);
     tabItems.insert(showWishlistAtFirst ? 0 : tabItems.length, 'Wishlist');
-  //   tabItems.insert(tabItems.length, 'P2P');
   }
 
 
   @override
   Widget build(BuildContext context) {
     selectedTabIndex = showWishlistAtFirst ? 1 : 0;
-    CoinController.to.getCoins(coinsList, tickerList);
+    CoinController.to.getCoins(coinsList, wishlistCoinsList, tickerList);
     CoinController.to.getSelectCurrencyList(currencyList.elementAt(0).toString());
     tabItemsList();
 
@@ -163,38 +166,18 @@ class AllCoin extends StatelessWidget {
                   child: SizedBox(
                     height: height * 0.7,
                     child:
-                    // isP2PSelected
-                    //     ? P2PScreen()
-                    //     : selectedTabIndex == 0
-                    //     ? ConstantClass.isLogin
-                    //     ? allWishlist.isNotEmpty
-                    //     ? ListView.builder(
-                    //     shrinkWrap: true,
-                    //     itemCount: allWishlist.length,
-                    //     itemBuilder: (context, index) {
-                    //       return itemsCard(index, context, allWishlist[index]);
-                    //     })
-                    //     : Center(child: Text("No favourite cryptos.", style: TextStyle(fontSize: 17, color: Theme.of(context).textTheme.bodyText1!.color, fontWeight: FontWeight.w700),),)
-                    //     : Login(height, width, context, 'to add/watch wishlist')
-                    //     :
-                    // selectedTabIndex == showWishlistAtFirst ? 0 : tabItems.length ?  :
-                    ListView.builder(
-                        // shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                        itemCount: CoinController.to.selectedCurrencyCoins.length,
-                        itemBuilder: (context, index) {
-                          return itemsCard(index, context, CoinController.to.selectedCurrencyCoins[index]);
-                        }),
+                    showWishlistAtFirst
+                        ? selectedTabIndex == 0
+                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        : selectedTabIndex == tabItems.length - 1
+                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        : coinsListView(CoinController.to.selectedCurrencyCoins)
+                        : selectedTabIndex == tabItems.length - 1
+                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        : coinsListView(CoinController.to.selectedCurrencyCoins),
+
                   ),
                 ),
-                // ListView.builder(
-                //     itemCount: CoinController.to.selectedCurrencyCoins.length,
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     itemBuilder: (context, index) {
-                //       // print('coin  list length =====> ${CoinController().allCoinsList}');
-                //       return itemsCard(index, context, CoinController.to.selectedCurrencyCoins[index]);
-                //     }),
               ],
             ),
           ),
@@ -203,25 +186,22 @@ class AllCoin extends StatelessWidget {
     );
   }
 
+  Widget coinsListView(coinController) {
+    return ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: coinController.length,
+        itemBuilder: (context, index) {
+          return itemsCard(index, context, coinController[index]);
+        });
+  }
+
   Widget currencyNameCard(int index, context) {
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if(tabItems[index].toString().toLowerCase() == 'wishlist') {
-          selectedTabIndex = index;
-          // isP2PSelected = false;
-        }
-        // else if(tabItems[index].toString().toLowerCase() == 'p2p') {
-        //   selectedTabIndex = index;
-        //   isP2PSelected = true;
-        // }
-        // else {
-
-          selectedTabIndex = index;
-          // isP2PSelected = false;
-          CoinController.to.getSelectCurrencyList(tabItems.elementAt(index).toString());
-          CoinController.to.selectedTabIndex(index);
-        // }
+        selectedTabIndex = index;
+        CoinController.to.getSelectCurrencyList(tabItems.elementAt(index).toString());
+        CoinController.to.selectedTabIndex(index);
       },
       child: Container(
         width: width * 0.16,
@@ -336,5 +316,4 @@ class AllCoin extends StatelessWidget {
       ],
     );
   }
-
 }

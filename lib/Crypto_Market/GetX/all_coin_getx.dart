@@ -13,11 +13,13 @@ class CoinController extends GetxController {
   static CoinController get to => Get.put(CoinController());
 
   List<Coin> allCoinsList = <Coin>[].obs;
+  List<Coin> wishlistCoinsList = <Coin>[].obs;
   var selectedTabIndex = 1.obs;
 
 
-  getCoins(List<Coin> coinsList, List<String> tickerList) async {
+  getCoins(List<Coin> coinsList, List<Coin>? wishlist, List<String> tickerList) async {
     allCoinsList = coinsList;
+    wishlist == null || wishlist.isEmpty ? null : wishlistCoinsList = wishlist;
     connectToServer(tickerList);
     update();
   }
@@ -95,7 +97,7 @@ class CoinController extends GetxController {
 
     var index = allCoinsList.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase() || element.coinSymbol.toUpperCase() == '${inrPairCoins.toUpperCase()}INR');
     var selectedCurrencyIndex = selectedCurrencyCoins.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase() || element.coinSymbol.toUpperCase() == '${inrPairCoins.toUpperCase()}INR');
-    // var wishlistIndex = allWishlist.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase());
+    var wishlistIndex = wishlistCoinsList.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase());
 
     // print('coinName @@@@@ Index  $selectedCurrencyIndex');
 
@@ -109,16 +111,13 @@ class CoinController extends GetxController {
       selectedCurrencyCoins.elementAt(selectedCurrencyIndex).coinPercentage = coinPercentage;
     }
 
-    // if(wishlistIndex >= 0) {
-    //   allWishlist.elementAt(wishlistIndex).coinPrice = coinPrice;
-    //   allWishlist.elementAt(wishlistIndex).coinPercentage = coinPercentage;
-    // }
+    if(wishlistIndex >= 0) {
+      wishlistCoinsList.elementAt(wishlistIndex).coinPrice = coinPrice;
+      wishlistCoinsList.elementAt(wishlistIndex).coinPercentage = coinPercentage;
+    }
 
     update();
-
-    // notifyListeners();
   }
-  ///
 
   connectToServer(tickerList) {
 
