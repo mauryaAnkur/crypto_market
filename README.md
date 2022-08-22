@@ -3,7 +3,7 @@
 
 ## Features
 
-
+!<img src="https://github.com/favicon.ico" height="150" width="100">
 ![All Coins](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/allCoin.jpg?token=GHSAT0AAAAAABXRIUL4S3NYW57BKJKZLB2GYX7LX3A)
 ![Coin Graph](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/coinGraph.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA)
 ![Coin Order Volume](https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderBook.jpg?token=GHSAT0AAAAA)
