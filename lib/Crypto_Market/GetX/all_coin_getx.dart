@@ -19,13 +19,14 @@ class CoinController extends GetxController {
 
   getCoins(List<Coin> coinsList, List<Coin>? wishlist, List<String> tickerList) async {
     allCoinsList = coinsList;
-    wishlist == null || wishlist.isEmpty ? null : wishlistCoinsList = wishlist;
+    if(wishlist != null) {
+      wishlistCoinsList = wishlist;
+    }
     connectToServer(tickerList);
     update();
   }
 
 
-  ///
   var selectedCurrency = ''.obs;
   List selectedCurrencyCoins = [].obs;
 
@@ -89,17 +90,13 @@ class CoinController extends GetxController {
   void updateCoin(String coinSymbol, String coinPrice, String coinPercentage) async {
 
     var inrPairCoins = coinSymbol.substring(0, coinSymbol.length - 4);
-    // print('string substring ===>  ${inrPairCoins+'INR'}');
-    // if(coinSymbol.substring(0, coinSymbol.length - 4)) {
-    //
-    // }
+
     allCoinsList.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase());
 
     var index = allCoinsList.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase() || element.coinSymbol.toUpperCase() == '${inrPairCoins.toUpperCase()}INR');
     var selectedCurrencyIndex = selectedCurrencyCoins.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase() || element.coinSymbol.toUpperCase() == '${inrPairCoins.toUpperCase()}INR');
     var wishlistIndex = wishlistCoinsList.indexWhere((element) => element.coinSymbol.toUpperCase() == coinSymbol.toUpperCase());
 
-    // print('coinName @@@@@ Index  $selectedCurrencyIndex');
 
     if(index >= 0) {
       allCoinsList.elementAt(index).coinPrice = coinPrice;
@@ -118,6 +115,7 @@ class CoinController extends GetxController {
 
     update();
   }
+
 
   connectToServer(tickerList) {
 

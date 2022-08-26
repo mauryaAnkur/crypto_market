@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 20),
-        child: allCoin(),
+        child: coinGraph(),
       ),
     );
   }
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget coinGraph() {
     return CoinGraph(
       coinData: coinsList.elementAt(0),
-      listedCoinGraphUrl: 'http://node.demo.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
+      listedCoinGraphUrl: 'http://node.coinxhub.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
       inrRate: 77.0,
     );
   }
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 List<Coin> coinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
+  Coin(coinID: '1', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: true),
   Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
