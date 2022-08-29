@@ -13,6 +13,7 @@ class CoinGraph extends StatelessWidget {
   final String listedCoinGraphUrl;
   final double inrRate;
   final Color backgroundColor;
+  final Function()? onSecondaryTap;
   final bool isLine;
   final bool hideGrid;
   final bool hideVolume;
@@ -28,6 +29,7 @@ class CoinGraph extends StatelessWidget {
     required this.listedCoinGraphUrl,
     required this.inrRate,
     this.backgroundColor = const Color(0xff18191d),
+    this.onSecondaryTap,
     this.isLine = false,
     this.hideGrid = false,
     this.hideVolume = false,
@@ -63,14 +65,14 @@ class CoinGraph extends StatelessWidget {
 
     return GetBuilder<CoinGraphController>(
         builder: (_) {
-          return Container(
+          return CoinGraphController.to.kChartCandles.isEmpty ? const Center(child: CircularProgressIndicator(),) : Container(
             color: backgroundColor,
             child: KChartWidget(
               CoinGraphController.to.kChartCandles,
               chartStyle,
               chartColors,
               isLine: isLine,
-              onSecondaryTap: () {},
+              onSecondaryTap: onSecondaryTap,
               mainState: MainState.NONE,
               volHidden: hideVolume,
               fixedLength: 2,

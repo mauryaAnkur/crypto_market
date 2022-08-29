@@ -71,8 +71,6 @@ class _CoinSearchState extends State<CoinSearch> {
   @override
   void initState() {
     CoinController.to.getCoins(widget.coinsList, null, widget.tickerList);
-    // Provider.of<CoinsProvider>(context, listen: false).getCoinList();
-    // connectToServer(context);
     super.initState();
   }
 

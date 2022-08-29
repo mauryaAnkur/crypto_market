@@ -37,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Crypto Market'),
       ),
       body: Container(
-        padding: const EdgeInsets.only(top: 20),
-        child: coinGraph(),
+        padding: const EdgeInsets.only(top: 6),
+        child: orderVolume(),
       ),
     );
   }
@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       currencyTabHeight: 100,
       showHeading: true,
       inrRate: 77.0,
+      onWishlistError: Container(color: Colors.green, height: 400, width: 400,),
       onCoinTap: (ctx, coin) {
         ///  ------  ///
       },
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget coinGraph() {
     return CoinGraph(
       coinData: coinsList.elementAt(0),
-      listedCoinGraphUrl: 'http://node.coinxhub.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
+      listedCoinGraphUrl: 'http://node.demo.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
       inrRate: 77.0,
     );
   }
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 List<Coin> coinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: true),
+  Coin(coinID: '1', coinImage: 'https://', coinName: 'Polygon', coinShortName: 'MATIC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'MATICUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
   Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),

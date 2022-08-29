@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +15,7 @@ class AllCoin extends StatelessWidget {
 
   /// wishlist
   final List<Coin> wishlistCoinsList;
+  final Widget? onWishlistError;
 
 
   ///
@@ -38,7 +38,6 @@ class AllCoin extends StatelessWidget {
   final TextStyle? headingTextStyle;
 
   /// coins list
-  final bool? showCoinImage;
   final BorderRadius? cardPercentageBorder;
   final double? cardPercentageHeight;
   final double? cardPercentageWidth;
@@ -54,6 +53,7 @@ class AllCoin extends StatelessWidget {
     required this.inrRate,
 
     required this.wishlistCoinsList,
+    this.onWishlistError = const Center(child: Text('Empty wishlist...', style: TextStyle(color: Colors.grey, fontSize: 20, fontWeight: FontWeight.w700,),),),
 
     this.showWishlistAtFirst = true,
 
@@ -71,7 +71,6 @@ class AllCoin extends StatelessWidget {
     this.showHeading = true,
     this.headingTextStyle,
 
-    this.showCoinImage = true,
     this.cardPercentageBorder,
     this.cardPercentageHeight,
     this.cardPercentageWidth,
@@ -170,12 +169,12 @@ class AllCoin extends StatelessWidget {
                     child:
                     showWishlistAtFirst
                         ? selectedTabIndex == 0
-                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        ? wishlistCoinsList.isEmpty ? onWishlistError : coinsListView(CoinController.to.wishlistCoinsList)
                         : selectedTabIndex == tabItems.length - 1
-                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        ? wishlistCoinsList.isEmpty ? onWishlistError : coinsListView(CoinController.to.wishlistCoinsList)
                         : coinsListView(CoinController.to.selectedCurrencyCoins)
                         : selectedTabIndex == tabItems.length - 1
-                        ? coinsListView(CoinController.to.wishlistCoinsList)
+                        ? wishlistCoinsList.isEmpty ? onWishlistError : coinsListView(CoinController.to.wishlistCoinsList)
                         : coinsListView(CoinController.to.selectedCurrencyCoins),
 
                   ),

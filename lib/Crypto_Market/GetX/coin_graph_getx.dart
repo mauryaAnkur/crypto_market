@@ -100,7 +100,7 @@ class CoinGraphController extends GetxController{
       }
     }
 
-    !coinData.coinListed ? connectToBinanceServer(coinData) : connectToListedCoinServer();
+    !coinData.coinListed ? connectToBinanceServer(coinData, interval) : connectToListedCoinServer();
     update();
   }
 
@@ -159,12 +159,12 @@ class CoinGraphController extends GetxController{
   }
 
 
-  connectToBinanceServer(Coin coinData) {
+  connectToBinanceServer(Coin coinData, String interval) {
     WebSocketChannel channelHome = IOWebSocketChannel.connect(Uri.parse('wss://stream.binance.com:9443/ws/stream?'),);
 
     var subRequestHome = {
       'method': "SUBSCRIBE",
-      'params': ['${coinData.coinShortName.toLowerCase()}usdt@kline_1m'],
+      'params': ['${coinData.coinShortName.toLowerCase()}usdt@kline_$interval'],
       'id': 1,
     };
 
