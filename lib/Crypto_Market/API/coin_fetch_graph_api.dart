@@ -28,12 +28,10 @@ Future<List<Candle>> fetchListedCoinCandles({required String listedCoinGraphUrl}
     candleList.add(Candle(
       date: DateTime.fromMillisecondsSinceEpoch(data['data'][i]['end_time']),
       high: double.parse(data['data'][i]['ohlc']['h'].toString()),
-      // high: 1,
       low: double.parse(data['data'][i]['ohlc']['l'].toString()),
       open: double.parse(data['data'][i]['ohlc']['o'].toString()),
       close: double.parse(data['data'][i]['ohlc']['c'].toString()),
       volume: double.parse(data['data'][i]['ohlc']['v'].toString()),
-      // volume: 1,
     ));
 
     dataKline.add(KLineEntity.fromCustom(

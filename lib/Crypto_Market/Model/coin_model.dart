@@ -1,17 +1,45 @@
+/// Coin model which holds a single coin data.
+/// It contains 14 required variables that hold a single coin data:
+/// coinID, coinImage, coinName, coinShortName, coinPrice,
+/// coinLastPrice, coinSymbol, coinPairWith, coinHighDay, coinLowDay,
+/// coinDecimalPair, coinDecimalCurrency and coinListed.
+///
+
 class Coin {
+  /// ID of coin
+  /// if you don't have coin ID then enter any random number
   String coinID;
+
+  /// Image of coin
   String coinImage;
+
+  /// Name of coin
   String coinName;
+
+  /// short name of coin
   String coinShortName;
+
+  /// price of coin
   String coinPrice;
+
+  /// last price of coin
+  /// if you don't have last price of coin then enter price of coin
   String coinLastPrice;
+
+  /// percentage change of coin
   String coinPercentage;
+
+  /// symbol of coin
   String coinSymbol;
+
+  ///
   String coinPairWith;
+
+  ///
   String coinHighDay;
   String coinLowDay;
-  String coinDecimalPair;
-  String coinDecimalCurrency;
+  int coinDecimalPair;
+  int coinDecimalCurrency;
   bool coinListed;
 
   Coin({

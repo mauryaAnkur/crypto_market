@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -80,8 +79,8 @@ class AllCoin extends StatelessWidget {
   }) : super(key: key);
 
 
-  List tabItems = [];
-  int selectedTabIndex = 0;
+  late final List tabItems = [];
+  late int selectedTabIndex = 0;
 
   tabItemsList() {
     tabItems.addAll(currencyList);
@@ -288,8 +287,8 @@ class AllCoin extends StatelessWidget {
                   width: width * 0.22,
                   child: Text(
                     coin.coinPairWith.toLowerCase() == 'inr'
-                        ? (double.parse(coin.coinPrice.toString()) * inrRate).toStringAsFixed(int.parse(coin.coinDecimalPair))
-                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(int.parse(coin.coinDecimalPair)),
+                        ? (double.parse(coin.coinPrice.toString()) * inrRate).toStringAsFixed(coin.coinDecimalPair)
+                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(coin.coinDecimalPair),
                     textAlign: TextAlign.end,
                     maxLines: 1,
                     style: TextStyle(

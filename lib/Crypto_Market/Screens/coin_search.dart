@@ -245,8 +245,8 @@ class _CoinSearchState extends State<CoinSearch> {
                   width: width * 0.22,
                   child: Text(
                     coin.coinPairWith.toLowerCase() == 'inr'
-                        ? (double.parse(coin.coinPrice.toString()) * widget.inrRate).toStringAsFixed(int.parse(coin.coinDecimalPair))
-                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(int.parse(coin.coinDecimalPair)),
+                        ? (double.parse(coin.coinPrice.toString()) * widget.inrRate).toStringAsFixed(coin.coinDecimalPair)
+                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(coin.coinDecimalPair),
                     textAlign: TextAlign.end,
                     maxLines: 1,
                     style: TextStyle(
@@ -367,8 +367,8 @@ class _CoinSearchState extends State<CoinSearch> {
                   width: width * 0.22,
                   child: Text(
                     coin.coinPairWith.toLowerCase() == 'inr'
-                        ? (double.parse(coin.coinPrice.toString()) * widget.inrRate).toStringAsFixed(int.parse(coin.coinDecimalPair))
-                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(int.parse(coin.coinDecimalPair)),
+                        ? (double.parse(coin.coinPrice.toString()) * widget.inrRate).toStringAsFixed(coin.coinDecimalPair)
+                        : double.parse(coin.coinPrice.toString()).toStringAsFixed(coin.coinDecimalPair),
                     textAlign: TextAlign.end,
                     maxLines: 1,
                     style: TextStyle(

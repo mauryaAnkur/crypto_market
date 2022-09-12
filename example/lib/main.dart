@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 6),
-        child: orderVolume(),
+        child: tradeHistory(),
       ),
     );
   }
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       currencyTabHeight: 100,
       showHeading: true,
       inrRate: 77.0,
-      onWishlistError: Container(color: Colors.green, height: 400, width: 400,),
+      onWishlistError: Center(child: Text('Wishlist not found!!', style: TextStyle(color: Colors.grey.shade600, fontSize: 20),),),
       onCoinTap: (ctx, coin) {
         ///  ------  ///
       },
@@ -71,17 +71,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget orderBook() {
-    return  CoinOrderBook(
+    return OrderBook(
       coinData: coinsList.elementAt(0),
-      listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
+      // listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
+      listedCoinOrderBookUrl: 'https://server.justbit.co.in/orders/order-book?currency=RPT&with_currency=INR',
       inrRate: 77.0,
     );
   }
 
   Widget orderVolume() {
-    return CoinOrderVolume(
+    return OrderVolume(
       coinData: coinsList.elementAt(0),
-      listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
+      // listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
+      listedCoinOrderBookUrl: 'https://server.justbit.co.in/orders/order-book?currency=RPT&with_currency=INR',
       inrRate: 77.0,
     );
   }
@@ -110,14 +112,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 List<Coin> coinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Polygon', coinShortName: 'MATIC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'MATICUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
-  Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
-  Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
-  Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false),
+  Coin(coinID: '1', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
+  // Coin(coinID: '1', coinImage: 'https://', coinName: 'Litecoin', coinShortName: 'LTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'LTCBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
+  Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
+  Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
+  Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
 ];
 
 List<Coin> wishlistCoinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Ethereum', coinShortName: 'ETH', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'ETHUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: '3', coinDecimalCurrency: '4', coinListed: false)
+  Coin(coinID: '1', coinImage: 'https://', coinName: 'Ethereum', coinShortName: 'ETH', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'ETHUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false)
 ];
 
 List<String> currencyList = [
@@ -137,57 +140,14 @@ List<String> tickerList = [
   "etcusdt@ticker",
   "dogeusdt@ticker",
   "bnbusdt@ticker",
-  "yfiusdt@ticker",
   "cakeusdt@ticker",
-  "vetusdt@ticker",
   "maticusdt@ticker",
   "trxusdt@ticker",
-  "eosusdt@ticker",
   "usdcusdt@ticker",
-  "neoeth@ticker",
-  "xmrbtc@ticker",
-  "wintrx@ticker",
-  "yfiiusdt@ticker",
-  "aaveusdt@ticker",
-  "dotusdt@ticker",
   "sandusdt@ticker",
   "maticbtc@ticker",
   "polybtc@ticker",
-  "yfiibtc@ticker",
   "bnbbtc@ticker",
-  "yfibtc@ticker",
-  "aavebtc@ticker",
-  "ltcbtc@ticker",
-  "cakebtc@ticker",
-  "eosbtc@ticker",
-  "jstbtc@ticker",
-  "chzbtc@ticker",
-  "polybtc@ticker",
-  "solbtc@ticker",
-  "ksmbtc@ticker",
-  "compbtc@ticker",
-  "dashbtc@ticker",
-  "axsbtc@ticker",
-  "btgbtc@ticker",
-  "lunabtc@ticker",
-  "dasheth@ticker",
-  "avaxeth@ticker",
-  "axseth@ticker",
-  "etceth@ticker",
-  "doteth@ticker",
-  "linketh@ticker",
-  "omgeth@ticker",
-  "sandeth@ticker",
-  "waveseth@ticker",
-  "nanoeth@ticker",
-  "ezeth@ticker",
-  "manaeth@ticker",
-  "enjeth@ticker",
-  "lsketh@ticker",
-  "aaveeth@ticker",
-  "mtleth@ticker",
-  "adaeth@ticker",
-  "iotaeth@ticker",
   "xrpeth@ticker",
   "shibusdt@ticker",
 ];
