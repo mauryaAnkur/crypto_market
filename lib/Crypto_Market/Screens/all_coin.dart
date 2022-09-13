@@ -191,7 +191,7 @@ class AllCoin extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: coinController.length,
         itemBuilder: (context, index) {
-          return itemsCard(index, context, coinController[index]);
+          return itemsCard(context, coinController[index]);
         });
   }
 
@@ -226,7 +226,7 @@ class AllCoin extends StatelessWidget {
     );
   }
 
-  Widget itemsCard(index, context, Coin coin) {
+  Widget itemsCard(BuildContext context, Coin coin) {
 
     double oldPrice = coin.coinLastPrice.isEmpty ? double.parse(coin.coinPrice) : double.parse(coin.coinLastPrice);
     coin.coinLastPrice = coin.coinPrice;
