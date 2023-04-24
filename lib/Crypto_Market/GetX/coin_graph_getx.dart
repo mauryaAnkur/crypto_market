@@ -9,63 +9,53 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../Model/coin_model.dart';
 
-class CoinGraphController extends GetxController{
-
+class CoinGraphController extends GetxController {
   static CoinGraphController get to => Get.put(CoinGraphController());
 
   List<KLineEntity> kChartCandles = <KLineEntity>[].obs;
 
+  String interval = '1m';
+
   double inrRate = 0.0;
 
+  WebSocketChannel channelHome = IOWebSocketChannel.connect(
+    Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
+  );
 
-  getCandles({required Coin coinData, required String listedCoinGraphUrl, required String interval}) async{
-
-    if(coinData.coinPairWith.toUpperCase() == "INR") {
-
+  getCandles({required Coin coinData, required String interval}) async {
+    kChartCandles.clear();
+    if (coinData.coinPairWith.toUpperCase() == "INR") {
       try {
-        !coinData.coinListed ? fetchCandles(symbol: "${coinData.coinShortName.toUpperCase()}USDT", interval: interval).then((value) {
-              for (int i = 0; i < value.length; i++) {
-                kChartCandles.add(KLineEntity.fromCustom(
-                    time: value[i].date.millisecondsSinceEpoch,
-                    amount: value[i].high * inrRate,
-                    change: value[i].volume,
-                    close: value[i].close * inrRate,
-                    high: value[i].high * inrRate,
-                    low: value[i].low * inrRate,
-                    open: value[i].open * inrRate,
-                    vol: value[i].volume,
-                    ratio: value[i].low * inrRate));
-              }
-            }
-        ) : fetchListedCoinCandles(listedCoinGraphUrl: listedCoinGraphUrl).then(
-              (value) {
-
-            for(int i=0;i<value.length;i++) {
+        fetchCandles(
+                symbol: "${coinData.coinShortName.toUpperCase()}USDT",
+                interval: interval)
+            .then((value) {
+          for (int i = 0; i < value.length; i++) {
+            kChartCandles.add(KLineEntity.fromCustom(
+                time: value[i].date.millisecondsSinceEpoch,
+                amount: value[i].high * inrRate,
+                change: value[i].volume,
+                close: value[i].close * inrRate,
+                high: value[i].high * inrRate,
+                low: value[i].low * inrRate,
+                open: value[i].open * inrRate,
+                vol: value[i].volume,
+                ratio: value[i].low * inrRate));
+          }
+        });
+      } catch (e) {
+        return;
+      }
+    } else {
+      try {
+        fetchCandles(
+                symbol: "${coinData.coinShortName.toUpperCase()}USDT",
+                interval: interval)
+            .then(
+          (value) {
+            for (int i = 0; i < value.length; i++) {
               kChartCandles.add(KLineEntity.fromCustom(
                   time: value[i].date.millisecondsSinceEpoch,
-                  amount: value[i].high * inrRate,
-                  change: value[i].volume,
-                  close: value[i].close * inrRate,
-                  high: value[i].high * inrRate,
-                  low: value[i].low * inrRate,
-                  open: value[i].open * inrRate,
-                  vol: value[i].volume,
-                  ratio: value[i].low * inrRate));
-            }
-          },
-        );
-      }
-      catch (e) {
-        return;
-      }
-    }
-    else {
-      try {
-        !coinData.coinListed ? fetchCandles(symbol: "${coinData.coinShortName.toUpperCase()}USDT", interval: interval).then((value) {
-
-            for(int i=0;i<value.length;i++) {
-              kChartCandles.add(KLineEntity.fromCustom(
-                  time:value[i].date.millisecondsSinceEpoch,
                   amount: value[i].high,
                   change: value[i].volume,
                   close: value[i].close,
@@ -73,94 +63,78 @@ class CoinGraphController extends GetxController{
                   low: value[i].low,
                   open: value[i].open,
                   vol: value[i].volume,
-                  ratio: value[i].low)
-              );
-            }
-          },
-        )
-            : fetchListedCoinCandles(listedCoinGraphUrl: listedCoinGraphUrl).then((value) {
-            for(int i=0;i<value.length;i++) {
-              kChartCandles.add(KLineEntity.fromCustom(
-                  time:value[i].date.millisecondsSinceEpoch,
-                  amount: value[i].high,
-                  change: value[i].volume,
-                  close: value[i].close,
-                  high: value[i].high,
-                  low: value[i].low,
-                  open: value[i].open,
-                  vol: value[i].volume,
-                  ratio: value[i].low)
-              );
+                  ratio: value[i].low));
             }
           },
         );
-      }
-      catch (e) {
+      } catch (e) {
         return;
       }
     }
 
-    !coinData.coinListed ? connectToBinanceServer(coinData, interval) : connectToListedCoinServer();
+    connectToBinanceServer(coinData, interval);
     update();
   }
 
-
   updateCoinGraph(data, Coin coinData) {
-    if (data.containsKey("k") == true && kChartCandles[kChartCandles.length-1].time! < data["k"]["t"]) {
-      if(coinData.coinPairWith.toUpperCase() == "INR") {
-        kChartCandles.add(KLineEntity.fromCustom(time:data["k"]["t"],
+    if (data.containsKey("k") == true &&
+        kChartCandles[kChartCandles.length - 1].time! < data["k"]["t"]) {
+      if (coinData.coinPairWith.toUpperCase() == "INR") {
+        kChartCandles.add(KLineEntity.fromCustom(
+            time: data["k"]["t"],
             amount: double.parse(data["k"]["h"].toString()) * inrRate,
-            change:  double.parse(data["k"]["v"].toString()),
+            change: double.parse(data["k"]["v"].toString()),
             close: double.parse(data["k"]["c"].toString()) * inrRate,
-            high: double.parse(data["k"]["h"].toString()) * inrRate ,
+            high: double.parse(data["k"]["h"].toString()) * inrRate,
             low: double.parse(data["k"]["l"].toString()) * inrRate,
             open: double.parse(data["k"]["o"].toString()) * inrRate,
             vol: double.parse(data["k"]["v"].toString()),
-            ratio:double.parse(data["k"]["c"].toString())));
-      }
-      else {
-        kChartCandles.add(KLineEntity.fromCustom(time:data["k"]["t"],
+            ratio: double.parse(data["k"]["c"].toString())));
+      } else {
+        kChartCandles.add(KLineEntity.fromCustom(
+            time: data["k"]["t"],
             amount: double.parse(data["k"]["h"].toString()),
-            change:  double.parse(data["k"]["v"].toString()),
+            change: double.parse(data["k"]["v"].toString()),
             close: double.parse(data["k"]["c"].toString()),
             high: double.parse(data["k"]["h"].toString()),
             low: double.parse(data["k"]["l"].toString()),
             open: double.parse(data["k"]["o"].toString()),
             vol: double.parse(data["k"]["v"].toString()),
-            ratio:double.parse(data["k"]["c"].toString())));
+            ratio: double.parse(data["k"]["c"].toString())));
       }
-    }
-
-    else if (data.containsKey("k") == true) {
-      if(coinData.coinPairWith.toUpperCase() == "INR") {
-        kChartCandles[kChartCandles.length - 1]=KLineEntity.fromCustom(time:data["k"]["t"],
+    } else if (data.containsKey("k") == true) {
+      if (coinData.coinPairWith.toUpperCase() == "INR") {
+        kChartCandles[kChartCandles.length - 1] = KLineEntity.fromCustom(
+            time: data["k"]["t"],
             amount: double.parse(data["k"]["h"]) * inrRate,
-            change:  double.parse(data["k"]["v"].toString()),
+            change: double.parse(data["k"]["v"].toString()),
             close: double.parse(data["k"]["c"]) * inrRate,
-            high: double.parse(data["k"]["h"]) * inrRate ,
+            high: double.parse(data["k"]["h"]) * inrRate,
             low: double.parse(data["k"]["l"]) * inrRate,
             open: double.parse(data["k"]["o"]) * inrRate,
             vol: double.parse(data["k"]["v"].toString()),
-            ratio:double.parse(data["k"]["c"].toString()));
-      }
-      else {
-        kChartCandles[kChartCandles.length - 1] = KLineEntity.fromCustom(time:data["k"]["t"],
+            ratio: double.parse(data["k"]["c"].toString()));
+      } else {
+        kChartCandles[kChartCandles.length - 1] = KLineEntity.fromCustom(
+            time: data["k"]["t"],
             amount: double.parse(data["k"]["h"].toString()),
-            change:  double.parse(data["k"]["v"].toString()),
+            change: double.parse(data["k"]["v"].toString()),
             close: double.parse(data["k"]["c"].toString()),
-            high: double.parse(data["k"]["h"].toString()) ,
-            low: double.parse(data["k"]["l"].toString()) ,
+            high: double.parse(data["k"]["h"].toString()),
+            low: double.parse(data["k"]["l"].toString()),
             open: double.parse(data["k"]["o"].toString()),
             vol: double.parse(data["k"]["v"].toString()),
-            ratio:double.parse(data["k"]["c"].toString()));
+            ratio: double.parse(data["k"]["c"].toString()));
       }
     }
     update();
   }
 
-
   connectToBinanceServer(Coin coinData, String interval) {
-    WebSocketChannel channelHome = IOWebSocketChannel.connect(Uri.parse('wss://stream.binance.com:9443/ws/stream?'),);
+    channelHome.sink.close();
+    channelHome = IOWebSocketChannel.connect(
+      Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
+    );
 
     var subRequestHome = {
       'method': "SUBSCRIBE",
@@ -182,7 +156,4 @@ class CoinGraphController extends GetxController{
       updateCoinGraph(snapshot, coinData);
     });
   }
-
-  connectToListedCoinServer() {}
-
 }

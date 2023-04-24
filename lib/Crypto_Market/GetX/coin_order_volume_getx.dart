@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:http/http.dart' as http;
 
 import '../Model/coin_model.dart';
 import '../Model/coin_order_volume_model.dart';
@@ -26,14 +25,17 @@ class OrderVolumeController extends GetxController {
   /// itemCount is the length of the list
   int itemCount = 20;
 
+  /// websocket
+  WebSocketChannel channelHome = IOWebSocketChannel.connect(
+    /// webSocket url
+    Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
+  );
+
   /// get coin order volumes
-  getOrderVolume(
-      {required Coin coinData, required String listedCoinOrderBookUrl}) async {
-    /// if coin is listed then connect to binance server,
-    /// else get order volumes from listed coin url
-    !coinData.coinListed
-        ? await connectToBinanceServer(coinData)
-        : await getListedCoinOrderVolume(listedCoinOrderBookUrl);
+  getOrderVolume({
+    required Coin coinData,
+  }) async {
+    await connectToBinanceServer(coinData);
 
     /// update UI
     update();
@@ -105,80 +107,10 @@ class OrderVolumeController extends GetxController {
     update();
   }
 
-  /// get listed coin order volume
-  getListedCoinOrderVolume(String listedCoinOrderBookUrl) async {
-    var response = await http.get(Uri.parse(listedCoinOrderBookUrl));
-    var data = json.decode(response.body);
-
-    /// buys list
-    List<double> buys = [];
-
-    /// asks list
-    List<double> asks = [];
-
-    /// check data['bids'] != null
-    if (data['data']['bids'].length > 0 || data['data']['asks'].length > 0) {
-      double buyLargeValue = 0.0;
-      double sellLargeValue = 0.0;
-
-      for (int i = 0; i < data['data']['bids'].length; i++) {
-        buys.add(double.parse(data['data']['bids'][i][1]));
-
-        i < data['data']['asks'].length
-            ? asks.add(double.parse(data['data']['asks'][i][1]))
-            : null;
-
-        /// buy large value
-        buyLargeValue = buys.reduce(max) > asks.reduce(max)
-            ? buys.reduce(max)
-            : asks.reduce(max);
-
-        /// insert an item into
-        /// coin order volume buy list
-        coinOrderVolumeBuyList.insert(
-            i,
-            OrderVolume(
-              price: double.parse(data['data']['bids'][i][0].toString())
-                  .toString(),
-              value: double.parse(data['data']['bids'][i][1].toString())
-                  .toString(),
-              percent: (double.parse(data['data']['bids'][i][1].toString()) /
-                      buyLargeValue)
-                  .toString(),
-            ));
-      }
-
-      for (int i = 0; i < data['data']['asks'].length; i++) {
-        /// sell large value
-        sellLargeValue = buys.isNotEmpty
-            ? buys.reduce(max) > asks.reduce(max)
-                ? buys.reduce(max)
-                : asks.reduce(max)
-            : 1.00;
-
-        /// insert an item into
-        /// coin order volume sell list
-        coinOrderVolumeSellList.insert(
-            i,
-            OrderVolume(
-              price: double.parse(data['data']['asks'][i][0].toString())
-                  .toString(),
-              value: double.parse(data['data']['asks'][i][1].toString())
-                  .toString(),
-              percent: (double.parse(data['data']['asks'][i][1].toString()) /
-                      sellLargeValue)
-                  .toString(),
-            ));
-      }
-    }
-
-    /// update UI
-    update();
-  }
-
   /// connect to binance server
   connectToBinanceServer(Coin coinData) {
-    WebSocketChannel channelHome = IOWebSocketChannel.connect(
+    channelHome.sink.close();
+    channelHome = IOWebSocketChannel.connect(
       /// webSocket url
       Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
     );

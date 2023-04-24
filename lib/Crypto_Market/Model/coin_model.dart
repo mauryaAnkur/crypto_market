@@ -38,9 +38,7 @@ class Coin {
   ///
   String coinHighDay;
   String coinLowDay;
-  int coinDecimalPair;
   int coinDecimalCurrency;
-  bool coinListed;
 
   Coin({
     required this.coinID,
@@ -54,13 +52,11 @@ class Coin {
     required this.coinPairWith,
     required this.coinHighDay,
     required this.coinLowDay,
-    required this.coinDecimalPair,
     required this.coinDecimalCurrency,
-    required this.coinListed,
   });
 
   @override
   String toString() {
-    return 'Coin{coinID: $coinID, coinImage: $coinImage, coinName: $coinName, coinShortName: $coinShortName, coinPrice: $coinPrice, coinLastPrice: $coinLastPrice, coinPercentage: $coinPercentage, coinSymbol: $coinSymbol, coinPairWith: $coinPairWith, coinHighDay: $coinHighDay, coinLowDay: $coinLowDay, coinDecimalPair: $coinDecimalPair, coinDecimalCurrency: $coinDecimalCurrency, coinListed: $coinListed}';
+    return 'Coin{coinID: $coinID, coinImage: $coinImage, coinName: $coinName, coinShortName: $coinShortName, coinPrice: $coinPrice, coinLastPrice: $coinLastPrice, coinPercentage: $coinPercentage, coinSymbol: $coinSymbol, coinPairWith: $coinPairWith, coinHighDay: $coinHighDay, coinLowDay: $coinLowDay, coinDecimalCurrency: $coinDecimalCurrency}';
   }
 }

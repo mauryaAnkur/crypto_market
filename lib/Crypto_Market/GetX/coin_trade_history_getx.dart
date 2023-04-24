@@ -9,28 +9,33 @@ import '../Model/coin_model.dart';
 import '../Model/coin_trade_history_model.dart';
 
 class TradeHistoryController extends GetxController {
-
   static TradeHistoryController get to => Get.put(TradeHistoryController());
 
   List<TradeHistory> tradeHistoryList = <TradeHistory>[].obs;
   int itemCount = 20;
 
+  WebSocketChannel channelHome = IOWebSocketChannel.connect(
+    Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
+  );
+
   addData(TradeHistory coinTradeHistory) {
     tradeHistoryList.add(coinTradeHistory);
 
-    if(tradeHistoryList.length > itemCount) {
+    if (tradeHistoryList.length > itemCount) {
       tradeHistoryList.removeAt(0);
     }
     update();
   }
 
   connectToTradeHistory(Coin coinData) {
-
-    WebSocketChannel channelHome = IOWebSocketChannel.connect(Uri.parse('wss://stream.binance.com:9443/ws/stream?'),);
+    channelHome.sink.close();
+    channelHome = IOWebSocketChannel.connect(
+      Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
+    );
 
     Map<String, dynamic> subRequestHome;
 
-    if(coinData.coinPairWith.toUpperCase() == 'INR') {
+    if (coinData.coinPairWith.toUpperCase() == 'INR') {
       subRequestHome = {
         'method': "SUBSCRIBE",
         'params': ['${coinData.coinShortName.toLowerCase()}usdt@trade'],
@@ -44,7 +49,6 @@ class TradeHistoryController extends GetxController {
       };
     }
 
-
     var jsonString = json.encode(subRequestHome);
     channelHome.sink.add(jsonString);
     var result = channelHome.stream.transform(
@@ -57,11 +61,14 @@ class TradeHistoryController extends GetxController {
     result.listen((event) {
       var snapshot = jsonDecode(event);
       addData(TradeHistory(
-          date: snapshot['T'] == null ? "" : DateTime.fromMillisecondsSinceEpoch(snapshot['T']).toString().split(' ')[1],
+          date: snapshot['T'] == null
+              ? ""
+              : DateTime.fromMillisecondsSinceEpoch(snapshot['T'])
+                  .toString()
+                  .split(' ')[1],
           type: snapshot['m'] == true ? "Buy" : "Sell",
-          price: snapshot['p'] == null ? "" : double.parse(snapshot['p'].toString()).toString(),
-          amount:  snapshot['q'] == null ? "" : snapshot['q'].toString()));
+          price: snapshot['p'] == null ? "0" : snapshot['p'].toString(),
+          amount: snapshot['q'] == null ? "0" : snapshot['q'].toString()));
     });
   }
-
 }

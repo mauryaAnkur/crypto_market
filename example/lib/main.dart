@@ -9,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 6),
-        child: tradeHistory(),
+        child: orderBook(),
       ),
     );
   }
@@ -49,13 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
       currencyList: currencyList,
       tickerList: tickerList,
       wishlistCoinsList: wishlistCoinsList,
-      showWishlistAtFirst: false,
+      showWishlistAtFirst: true,
       currencyTabSelectedItemColor: Colors.red,
       currencyTabBackgroundColor: Colors.transparent,
       currencyTabHeight: 100,
       showHeading: true,
       inrRate: 77.0,
-      onWishlistError: Center(child: Text('Wishlist not found!!', style: TextStyle(color: Colors.grey.shade600, fontSize: 20),),),
+      // coinCardWidget: (coin){return Text(coin.coinPrice);},
+      onWishlistError: Center(
+        child: Text(
+          'Wishlist not found!!',
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 20),
+        ),
+      ),
       onCoinTap: (ctx, coin) {
         ///  ------  ///
       },
@@ -65,16 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget coinGraph() {
     return CoinGraph(
       coinData: coinsList.elementAt(0),
-      listedCoinGraphUrl: 'http://node.demo.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
       inrRate: 77.0,
+      intervalSelectedTextColor: Colors.red,
+      intervalTextSize: 20,
+      intervalUnselectedTextColor: Colors.black,
     );
   }
 
   Widget orderBook() {
     return OrderBook(
       coinData: coinsList.elementAt(0),
-      // listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
-      listedCoinOrderBookUrl: 'https://server.justbit.co.in/orders/order-book?currency=RPT&with_currency=INR',
       inrRate: 77.0,
     );
   }
@@ -82,8 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget orderVolume() {
     return OrderVolume(
       coinData: coinsList.elementAt(0),
-      // listedCoinOrderBookUrl: 'http://node.demo.com/orders/order-book?currency=TST&with_currency=USDT',
-      listedCoinOrderBookUrl: 'https://server.justbit.co.in/orders/order-book?currency=RPT&with_currency=INR',
       inrRate: 77.0,
     );
   }
@@ -91,13 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget tradeHistory() {
     return CoinTradeHistory(
       coinData: coinsList.elementAt(0),
-      listedCoinTradeHistoryAPIUrl: 'http://node.demo.com/orders/trade-book?currency=TST&with_currency=USDT',
       itemCount: 15,
       inrRate: 77,
     );
   }
 
-  Widget coinSearch() {
+  Widget searchCoin() {
     return CoinSearch(
       coinsList: coinsList,
       currencyList: currencyList,
@@ -105,22 +107,77 @@ class _HomeScreenState extends State<HomeScreen> {
       inrRate: 77.0,
     );
   }
-
 }
 
-
-
-
 List<Coin> coinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
-  // Coin(coinID: '1', coinImage: 'https://', coinName: 'Litecoin', coinShortName: 'LTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'LTCBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
-  Coin(coinID: '2', coinImage: 'https://', coinName: 'Bitcoin', coinShortName: 'BTC', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'BTCINR', coinPairWith: 'INR', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
-  Coin(coinID: '3', coinImage: 'https://', coinName: 'Binance USD', coinShortName: 'BUSD', coinPrice: '0.0005', coinLastPrice: '0.0005', coinPercentage: '-0.5', coinSymbol: 'BUSDBNB', coinPairWith: 'BNB', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
-  Coin(coinID: '4', coinImage: 'https://', coinName: 'Dogecoin', coinShortName: 'DOGE', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'DOGEUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false),
+  Coin(
+      coinID: '1',
+      coinImage: 'https://',
+      coinName: 'Bitcoin',
+      coinShortName: 'BTC',
+      coinPrice: '123456',
+      coinLastPrice: '123456',
+      coinPercentage: '-0.5',
+      coinSymbol: 'BTCUSDT',
+      coinPairWith: 'USDT',
+      coinHighDay: '567',
+      coinLowDay: '12',
+      coinDecimalCurrency: 4),
+  Coin(
+      coinID: '2',
+      coinImage: 'https://',
+      coinName: 'Bitcoin',
+      coinShortName: 'BTC',
+      coinPrice: '123456',
+      coinLastPrice: '123456',
+      coinPercentage: '-0.5',
+      coinSymbol: 'BTCINR',
+      coinPairWith: 'INR',
+      coinHighDay: '567',
+      coinLowDay: '12',
+      coinDecimalCurrency: 4),
+  Coin(
+      coinID: '3',
+      coinImage: 'https://',
+      coinName: 'Binance USD',
+      coinShortName: 'BUSD',
+      coinPrice: '0.0005',
+      coinLastPrice: '0.0005',
+      coinPercentage: '-0.5',
+      coinSymbol: 'BUSDBNB',
+      coinPairWith: 'BNB',
+      coinHighDay: '567',
+      coinLowDay: '12',
+      coinDecimalCurrency: 4),
+  Coin(
+      coinID: '4',
+      coinImage: 'https://',
+      coinName: 'Dogecoin',
+      coinShortName: 'DOGE',
+      coinPrice: '123456',
+      coinLastPrice: '123456',
+      coinPercentage: '-0.5',
+      coinSymbol: 'DOGEUSDT',
+      coinPairWith: 'USDT',
+      coinHighDay: '567',
+      coinLowDay: '12',
+      coinDecimalCurrency: 4),
 ];
 
 List<Coin> wishlistCoinsList = [
-  Coin(coinID: '1', coinImage: 'https://', coinName: 'Ethereum', coinShortName: 'ETH', coinPrice: '123456', coinLastPrice: '123456', coinPercentage: '-0.5', coinSymbol: 'ETHUSDT', coinPairWith: 'USDT', coinHighDay: '567', coinLowDay: '12', coinDecimalPair: 3, coinDecimalCurrency: 4, coinListed: false)
+  Coin(
+      coinID: '1',
+      coinImage: 'https://',
+      coinName: 'Ethereum',
+      coinShortName: 'ETH',
+      coinPrice: '123456',
+      coinLastPrice: '123456',
+      coinPercentage: '-0.5',
+      coinSymbol: 'ETHUSDT',
+      coinPairWith: 'USDT',
+      coinHighDay: '567',
+      coinLowDay: '12',
+      coinDecimalCurrency: 4)
 ];
 
 List<String> currencyList = [
@@ -128,8 +185,6 @@ List<String> currencyList = [
   'INR',
   'BNB',
 ];
-
-
 
 List<String> tickerList = [
   "btcusdt@ticker",
