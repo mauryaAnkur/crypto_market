@@ -147,10 +147,10 @@ class OrderVolume extends StatelessWidget {
                 child: SizedBox(
                   width: width * 0.48,
                   child: Text(
-                    coinData.coinPairWith == "INR"
-                        ? price.toStringAsFixed(coinData.coinDecimalCurrency)
+                    coinData.pairWith == "INR"
+                        ? price.toStringAsFixed(coinData.decimalCurrency)
                         : double.parse(item.price)
-                            .toStringAsFixed(coinData.coinDecimalCurrency),
+                            .toStringAsFixed(coinData.decimalCurrency),
                     maxLines: 1,
                     textAlign: TextAlign.end,
                     style: TextStyle(
@@ -183,10 +183,10 @@ class OrderVolume extends StatelessWidget {
                 child: SizedBox(
                   width: width * 0.48,
                   child: Text(
-                    coinData.coinPairWith == "INR"
-                        ? price.toStringAsFixed(coinData.coinDecimalCurrency)
+                    coinData.pairWith == "INR"
+                        ? price.toStringAsFixed(coinData.decimalCurrency)
                         : double.parse(item.price)
-                            .toStringAsFixed(coinData.coinDecimalCurrency),
+                            .toStringAsFixed(coinData.decimalCurrency),
                     maxLines: 1,
                     textAlign: TextAlign.start,
                     style: const TextStyle(

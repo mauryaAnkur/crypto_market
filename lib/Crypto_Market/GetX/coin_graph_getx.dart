@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto_market/Crypto_Market/API/coin_fetch_graph_api.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:k_chart/entity/k_line_entity.dart';
 import 'package:web_socket_channel/io.dart';
@@ -13,6 +14,7 @@ class CoinGraphController extends GetxController {
   static CoinGraphController get to => Get.put(CoinGraphController());
 
   List<KLineEntity> kChartCandles = <KLineEntity>[].obs;
+  List<FlSpot> lineChart = <FlSpot>[].obs;
 
   String interval = '1m';
 
@@ -23,13 +25,14 @@ class CoinGraphController extends GetxController {
   );
 
   getCandles({required Coin coinData, required String interval}) async {
-    kChartCandles.clear();
-    if (coinData.coinPairWith.toUpperCase() == "INR") {
+    if (coinData.pairWith.toUpperCase() == "INR") {
       try {
         fetchCandles(
-                symbol: "${coinData.coinShortName.toUpperCase()}USDT",
-                interval: interval)
-            .then((value) {
+          symbol: "${coinData.shortName.toUpperCase()}USDT",
+          interval: interval,
+        ).then((value) {
+          kChartCandles.clear();
+          lineChart.clear();
           for (int i = 0; i < value.length; i++) {
             kChartCandles.add(KLineEntity.fromCustom(
                 time: value[i].date.millisecondsSinceEpoch,
@@ -41,18 +44,27 @@ class CoinGraphController extends GetxController {
                 open: value[i].open * inrRate,
                 vol: value[i].volume,
                 ratio: value[i].low * inrRate));
+
+            lineChart.add(FlSpot(
+              double.parse(value[i].date.millisecondsSinceEpoch.toString()),
+              value[i].close * inrRate,
+            ));
           }
         });
       } catch (e) {
+        kChartCandles.clear();
+        lineChart.clear();
         return;
       }
     } else {
       try {
         fetchCandles(
-                symbol: "${coinData.coinShortName.toUpperCase()}USDT",
-                interval: interval)
-            .then(
+          symbol: coinData.symbol.toUpperCase(),
+          interval: interval,
+        ).then(
           (value) {
+            kChartCandles.clear();
+            lineChart.clear();
             for (int i = 0; i < value.length; i++) {
               kChartCandles.add(KLineEntity.fromCustom(
                   time: value[i].date.millisecondsSinceEpoch,
@@ -64,10 +76,19 @@ class CoinGraphController extends GetxController {
                   open: value[i].open,
                   vol: value[i].volume,
                   ratio: value[i].low));
+
+              lineChart.add(
+                FlSpot(
+                  double.parse(value[i].date.millisecondsSinceEpoch.toString()),
+                  value[i].close,
+                ),
+              );
             }
           },
         );
       } catch (e) {
+        kChartCandles.clear();
+        lineChart.clear();
         return;
       }
     }
@@ -79,7 +100,7 @@ class CoinGraphController extends GetxController {
   updateCoinGraph(data, Coin coinData) {
     if (data.containsKey("k") == true &&
         kChartCandles[kChartCandles.length - 1].time! < data["k"]["t"]) {
-      if (coinData.coinPairWith.toUpperCase() == "INR") {
+      if (coinData.pairWith.toUpperCase() == "INR") {
         kChartCandles.add(KLineEntity.fromCustom(
             time: data["k"]["t"],
             amount: double.parse(data["k"]["h"].toString()) * inrRate,
@@ -103,7 +124,7 @@ class CoinGraphController extends GetxController {
             ratio: double.parse(data["k"]["c"].toString())));
       }
     } else if (data.containsKey("k") == true) {
-      if (coinData.coinPairWith.toUpperCase() == "INR") {
+      if (coinData.pairWith.toUpperCase() == "INR") {
         kChartCandles[kChartCandles.length - 1] = KLineEntity.fromCustom(
             time: data["k"]["t"],
             amount: double.parse(data["k"]["h"]) * inrRate,
@@ -138,7 +159,7 @@ class CoinGraphController extends GetxController {
 
     var subRequestHome = {
       'method': "SUBSCRIBE",
-      'params': ['${coinData.coinShortName.toLowerCase()}usdt@kline_$interval'],
+      'params': ['${coinData.shortName.toLowerCase()}usdt@kline_$interval'],
       'id': 1,
     };
 

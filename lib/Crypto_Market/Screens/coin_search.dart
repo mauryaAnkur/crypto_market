@@ -126,9 +126,9 @@ class _CoinSearchState extends State<CoinSearch> {
                         onTap: () {
                           setState(() {
                             CoinController.to.allCoinsList.sort((a, b) {
-                              return a.coinName
+                              return a.name
                                   .toLowerCase()
-                                  .compareTo(b.coinName.toLowerCase());
+                                  .compareTo(b.name.toLowerCase());
                             });
                             sortList = false;
                           });
@@ -146,8 +146,8 @@ class _CoinSearchState extends State<CoinSearch> {
                         onTap: () {
                           setState(() {
                             CoinController.to.allCoinsList.sort((a, b) {
-                              return double.parse(a.coinPrice)
-                                  .compareTo(double.parse(b.coinPrice));
+                              return double.parse(a.price)
+                                  .compareTo(double.parse(b.price));
                             });
                             sortList = false;
                           });

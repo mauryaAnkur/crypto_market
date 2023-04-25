@@ -16,28 +16,3 @@ Future<List<Candle>> fetchCandles(
   /// return candles
   return (data).map((e) => Candle.fromJson(e)).toList();
 }
-
-/// fetch listed coin candles
-Future<List<Candle>> fetchListedCoinCandles(
-    {required String listedCoinGraphUrl}) async {
-  final uri = Uri.parse(listedCoinGraphUrl);
-  List<Candle> candleList = [];
-
-  final res = await http.get(uri);
-  var data = json.decode(res.body);
-
-  /// add candles into list
-  for (var i = 0; i < data['data'].length; i++) {
-    candleList.add(Candle(
-      date: DateTime.fromMillisecondsSinceEpoch(data['data'][i]['end_time']),
-      high: double.parse(data['data'][i]['ohlc']['h'].toString()),
-      low: double.parse(data['data'][i]['ohlc']['l'].toString()),
-      open: double.parse(data['data'][i]['ohlc']['o'].toString()),
-      close: double.parse(data['data'][i]['ohlc']['c'].toString()),
-      volume: double.parse(data['data'][i]['ohlc']['v'].toString()),
-    ));
-  }
-
-  /// return candles
-  return candleList;
-}

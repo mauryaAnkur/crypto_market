@@ -152,7 +152,7 @@ class OrderBook extends StatelessWidget {
                 child: SizedBox(
                   width: width * 0.48,
                   child: Text(
-                    coinData.coinPairWith == "INR"
+                    coinData.pairWith == "INR"
                         ? (double.parse(item.price.isNotEmpty
                                     ? item.price
                                     : '0.0') *
@@ -199,7 +199,7 @@ class OrderBook extends StatelessWidget {
                 child: SizedBox(
                   width: width * 0.48,
                   child: Text(
-                    coinData.coinPairWith == "INR"
+                    coinData.pairWith == "INR"
                         ? price.toString()
                         : double.parse(item.price).toString(),
                     maxLines: 1,

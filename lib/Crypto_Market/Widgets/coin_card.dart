@@ -8,10 +8,10 @@ Widget coinCard({
   required double inrRate,
   final Function(BuildContext, Coin)? onTap,
 }) {
-  double oldPrice = coin.coinLastPrice.isEmpty
-      ? double.parse(coin.coinPrice)
-      : double.parse(coin.coinLastPrice);
-  coin.coinLastPrice = coin.coinPrice;
+  double oldPrice = coin.lastPrice.isEmpty
+      ? double.parse(coin.price)
+      : double.parse(coin.lastPrice);
+  coin.lastPrice = coin.price;
 
   final height = MediaQuery.of(context).size.height;
   final width = MediaQuery.of(context).size.width;
@@ -31,7 +31,7 @@ Widget coinCard({
               Row(
                 children: [
                   Image.network(
-                    coin.coinImage,
+                    coin.image,
                     height: width * 0.085,
                     width: width * 0.085,
                     fit: BoxFit.fill,
@@ -44,7 +44,7 @@ Widget coinCard({
                               color: Colors.grey.shade400, width: 1)),
                       child: Center(
                         child: Text(
-                            coin.coinName.isEmpty ? '-' : coin.coinName[0]),
+                            coin.name.isEmpty ? '-' : coin.name[0]),
                       ),
                     ),
                   ),
@@ -59,14 +59,14 @@ Widget coinCard({
                         child: Row(
                           children: [
                             Text(
-                              "${coin.coinShortName} / ",
+                              "${coin.shortName} / ",
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
-                              coin.coinPairWith,
+                              coin.pairWith,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -79,7 +79,7 @@ Widget coinCard({
                         height: height * 0.005,
                       ),
                       Text(
-                        coin.coinName,
+                        coin.name,
                         style: const TextStyle(
                           fontSize: 10,
                         ),
@@ -91,18 +91,18 @@ Widget coinCard({
               SizedBox(
                 width: width * 0.22,
                 child: Text(
-                  coin.coinPairWith.toLowerCase() == 'inr'
-                      ? (double.parse(coin.coinPrice.toString()) * inrRate)
-                          .toStringAsFixed(coin.coinDecimalCurrency)
-                      : double.parse(coin.coinPrice.toString())
-                          .toStringAsFixed(coin.coinDecimalCurrency),
+                  coin.pairWith.toLowerCase() == 'inr'
+                      ? (double.parse(coin.price.toString()) * inrRate)
+                          .toStringAsFixed(coin.decimalCurrency)
+                      : double.parse(coin.price.toString())
+                          .toStringAsFixed(coin.decimalCurrency),
                   textAlign: TextAlign.end,
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 12,
-                    color: double.parse(coin.coinPrice) > oldPrice
+                    color: double.parse(coin.price) > oldPrice
                         ? Colors.lightGreen
-                        : double.parse(coin.coinPrice) < oldPrice
+                        : double.parse(coin.price) < oldPrice
                             ? Colors.red
                             : null,
                     fontWeight: FontWeight.w700,
@@ -113,7 +113,7 @@ Widget coinCard({
                 width: width * 0.16,
                 height: height * 0.025,
                 decoration: BoxDecoration(
-                  color: coin.coinPercentage.toString().startsWith('-')
+                  color: coin.percentage.toString().startsWith('-')
                       ? Colors.red
                       : Colors.lightGreen,
                   borderRadius: BorderRadius.circular(0),
@@ -122,7 +122,7 @@ Widget coinCard({
                 child: Center(
                   child: FittedBox(
                     child: Text(
-                      '${coin.coinPercentage}%',
+                      '${coin.percentage}%',
                       style: const TextStyle(
                           fontSize: 11,
                           color: Colors.white,

@@ -139,9 +139,9 @@ class AllCoin extends StatelessWidget {
                               onTap: () {
                                 CoinController.to.selectedCurrencyCoins
                                     .sort((a, b) {
-                                  return a.coinName
+                                  return a.name
                                       .toLowerCase()
-                                      .compareTo(b.coinName.toLowerCase());
+                                      .compareTo(b.name.toLowerCase());
                                 });
                                 //sortList = false;
                               },
@@ -161,8 +161,8 @@ class AllCoin extends StatelessWidget {
                               onTap: () {
                                 CoinController.to.selectedCurrencyCoins
                                     .sort((a, b) {
-                                  return double.parse(a.coinPrice)
-                                      .compareTo(double.parse(b.coinPrice));
+                                  return double.parse(a.price)
+                                      .compareTo(double.parse(b.price));
                                 });
                                 //sortList = false;
                               },
@@ -209,13 +209,7 @@ class AllCoin extends StatelessWidget {
                                 ? onWishlistError
                                 : coinsListView(
                                     CoinController.to.wishlistCoinsList)
-                            : coinController.selectedTabIndex ==
-                                    tabItems.length - 1
-                                ? wishlistCoinsList.isEmpty
-                                    ? onWishlistError
-                                    : coinsListView(
-                                        CoinController.to.wishlistCoinsList)
-                                : coinsListView(
+                            : coinsListView(
                                     CoinController.to.selectedCurrencyCoins)
                         : coinController.selectedTabIndex == tabItems.length - 1
                             ? wishlistCoinsList.isEmpty

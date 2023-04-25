@@ -118,11 +118,11 @@ class OrderVolumeController extends GetxController {
     Map<String, Object> subRequestHome;
 
     /// check coinPair is INR or not
-    if (coinData.coinPairWith == "INR") {
+    if (coinData.pairWith == "INR") {
       subRequestHome = {
         'method': "SUBSCRIBE",
         'params': [
-          '${coinData.coinShortName.toLowerCase()}usdt@depth20@1000ms',
+          '${coinData.shortName.toLowerCase()}usdt@depth20@1000ms',
         ],
         'id': 3,
       };
@@ -130,7 +130,7 @@ class OrderVolumeController extends GetxController {
       subRequestHome = {
         'method': "SUBSCRIBE",
         'params': [
-          '${coinData.coinSymbol.toLowerCase()}@depth20@1000ms',
+          '${coinData.symbol.toLowerCase()}@depth20@1000ms',
         ],
         'id': 3,
       };

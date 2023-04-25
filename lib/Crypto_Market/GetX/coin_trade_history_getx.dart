@@ -35,16 +35,16 @@ class TradeHistoryController extends GetxController {
 
     Map<String, dynamic> subRequestHome;
 
-    if (coinData.coinPairWith.toUpperCase() == 'INR') {
+    if (coinData.pairWith.toUpperCase() == 'INR') {
       subRequestHome = {
         'method': "SUBSCRIBE",
-        'params': ['${coinData.coinShortName.toLowerCase()}usdt@trade'],
+        'params': ['${coinData.shortName.toLowerCase()}usdt@trade'],
         'id': 1,
       };
     } else {
       subRequestHome = {
         'method': "SUBSCRIBE",
-        'params': ['${coinData.coinSymbol.toLowerCase()}@trade'],
+        'params': ['${coinData.symbol.toLowerCase()}@trade'],
         'id': 1,
       };
     }

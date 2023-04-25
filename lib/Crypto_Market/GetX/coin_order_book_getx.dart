@@ -69,13 +69,6 @@ class OrderBookController extends GetxController {
               OrderVolume(
                 price: double.parse(data['bids'][i][0]).toString(),
                 value: double.parse(data['bids'][i][1].toString()).toString(),
-                // value: coinOrderBookBuyList.isEmpty
-                //     ? double.parse(data['bids'][i][1].toString()).toString()
-                //     : (double.parse(data['bids'][i][1].toString()) +
-                //             double.parse(coinOrderBookBuyList
-                //                 .elementAt(coinOrderBookBuyList.length - 1)
-                //                 .value))
-                //         .toString(),
                 percent:
                     (double.parse(data['bids'][i][1].toString()) / largeValue)
                         .toString(),
@@ -88,13 +81,6 @@ class OrderBookController extends GetxController {
               OrderVolume(
                 price: double.parse(data['asks'][i][0]).toString(),
                 value: double.parse(data['asks'][i][1].toString()).toString(),
-                // value: coinOrderBookSellList.isEmpty
-                //     ? double.parse(data['asks'][i][1].toString()).toString()
-                //     : (double.parse(data['asks'][i][1].toString()) +
-                //             double.parse(coinOrderBookSellList
-                //                 .elementAt(coinOrderBookSellList.length - 1)
-                //                 .value))
-                //         .toString(),
                 percent:
                     (double.parse(data['asks'][i][1].toString()) / largeValue)
                         .toString(),
@@ -119,7 +105,7 @@ class OrderBookController extends GetxController {
     update();
   }
 
-  /// connect to binance server
+  /// connect to binance websocket
   connectToBinanceServer(Coin coinData) {
     channelHome.sink.close();
     channelHome = IOWebSocketChannel.connect(
@@ -130,19 +116,20 @@ class OrderBookController extends GetxController {
     Map<String, Object> subRequestHome;
 
     /// check coinPair is INR or not
-    if (coinData.coinPairWith == "INR") {
+    if (coinData.pairWith == "INR") {
       subRequestHome = {
         'method': "SUBSCRIBE",
         'params': [
-          '${coinData.coinShortName.toLowerCase()}usdt@depth20@1000ms',
+          '${coinData.shortName.toLowerCase()}usdt@depth20@1000ms',
         ],
         'id': 3,
       };
     } else {
       subRequestHome = {
         'method': "SUBSCRIBE",
+
         'params': [
-          '${coinData.coinSymbol.toLowerCase()}@depth20@1000ms',
+          '${coinData.symbol.toLowerCase()}@depth20@1000ms',
         ],
         'id': 3,
       };
@@ -164,11 +151,8 @@ class OrderBookController extends GetxController {
         /// if coin order book buy list length is greater than item count
         /// then delete the item at index 0 from list
         if (coinOrderBookBuyList.length > itemCount) {
-          for (var i = 0; i < coinOrderBookBuyList.length; i++) {
-            if (i > itemCount) {
-              coinOrderBookBuyList.removeAt(i);
-            }
-          }
+          coinOrderBookBuyList.removeRange(
+              itemCount, coinOrderBookBuyList.length);
         }
       }
 
@@ -176,11 +160,8 @@ class OrderBookController extends GetxController {
         /// if coin order book sell list length is greater than item count
         /// then delete the item at index 0 from list
         if (coinOrderBookSellList.length > itemCount) {
-          for (var i = 0; i < coinOrderBookSellList.length; i++) {
-            if (i > itemCount) {
-              coinOrderBookSellList.removeAt(i);
-            }
-          }
+          coinOrderBookSellList.removeRange(
+              itemCount, coinOrderBookSellList.length);
         }
       }
 
