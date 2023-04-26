@@ -4,9 +4,9 @@
 ## Features
 
 
-<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/allCoin.jpg?token=GHSAT0AAAAAABXRIUL4S3NYW57BKJKZLB2GYX7LX3A" alt="All Coins" width="300" height="540">                  <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/coinGraph.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA" alt="Coin Graph" width="300" height="540">
-<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderBook.jpg?token=GHSAT0AAAAA" alt="Coin Order Volume" width="300" height="540">                  <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/orderVolume.jpg?token=GHSAT0AAAAAABXRIUL5AUNZBRWKTPH3OCREYX7MLQQ" alt="Coin Order Book" width="300" height="540">
-<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/tradeHistory.jpg?token=GHSAT0AAAAAABXRIUL5FHHMFMFU4QR62ARUYX7ML2A" alt="Coin Trade History" width="300" height="540">                  <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/searchCoin.jpg?token=GHSAT0AAAAAABXRIUL4HFF6SJDM4M72K5OQYX7L3JQ" alt="Coin Search" width="300" height="540">
+<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/all_coin.jpg?token=GHSAT0AAAAAABXRIUL4S3NYW57BKJKZLB2GYX7LX3A" alt="All Coins" width="300" height="540">                  <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/searchCoin.jpg?token=GHSAT0AAAAAABXRIUL4HFF6SJDM4M72K5OQYX7L3JQ" alt="Coin Search" width="300" height="540">
+<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/candle_chart.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA" alt="Coin Chart" width="300" height="540">                 <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/line_chart.jpg?token=GHSAT0AAAAAABXRIUL4LT3FZLGWVRYFUI24YX7MKRA" alt="Coin Line Chart" width="300" height="540">
+<img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/order_volume.jpg?token=GHSAT0AAAAA" alt="Coin Order Volume" width="300" height="540">                  <img src="https://raw.githubusercontent.com/mauryaAnkur/crypto_market/master/assets/tradeHistory.jpg?token=GHSAT0AAAAAABXRIUL5FHHMFMFU4QR62ARUYX7ML2A" alt="Coin Trade History" width="300" height="540">
 
 ## Usage
 
@@ -28,12 +28,45 @@ AllCoin(
     );
 ````
 
-## Coin Graph
+## Candle Chart
 ````
 CoinGraph(
       coinData: coinsList.elementAt(0),
       listedCoinGraphUrl: 'http://node.demo.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
       inrRate: 77.0,
+    );
+````
+
+## Line Chart
+````
+CoinLineChart(
+      coinData: coinsList.elementAt(4),
+      inrRate: 77.0,
+      intervalSelectedTextColor: Colors.red,
+      intervalTextSize: 20,
+      intervalUnselectedTextColor: Colors.black,
+      chartBorderColor: Colors.green,
+      showToolTip: false,
+      showInterval: false,
+      chartColor: LinearGradient(
+       colors: [
+         Colors.green.shade500.withOpacity(1),
+         Colors.green.shade500.withOpacity(0.9),
+         Colors.green.shade500.withOpacity(0.8),
+         Colors.green.shade500.withOpacity(0.7),
+         Colors.green.shade500.withOpacity(0.6),
+         Colors.green.shade500.withOpacity(0.5),
+         Colors.green.shade500.withOpacity(0.4),
+         Colors.green.shade500.withOpacity(0.3),
+         Colors.green.shade500.withOpacity(0.2),
+         Colors.green.shade500.withOpacity(0.1),
+         Colors.green.shade500.withOpacity(0.0),
+       ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+      toolTipBgColor: Colors.green.shade900,
+      toolTipTextColor: Colors.white,
     );
 ````
 

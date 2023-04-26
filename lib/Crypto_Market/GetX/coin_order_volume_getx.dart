@@ -16,10 +16,10 @@ import '../Model/coin_order_volume_model.dart';
 class OrderVolumeController extends GetxController {
   static OrderVolumeController get to => Get.put(OrderVolumeController());
 
-  /// coin order volume buy list
+  /// coin order book buy list
   List<OrderVolume> coinOrderVolumeBuyList = <OrderVolume>[].obs;
 
-  /// coin order volume sell list
+  /// coin order book sell list
   List<OrderVolume> coinOrderVolumeSellList = <OrderVolume>[].obs;
 
   /// itemCount is the length of the list
@@ -31,10 +31,8 @@ class OrderVolumeController extends GetxController {
     Uri.parse('wss://stream.binance.com:9443/ws/stream?'),
   );
 
-  /// get coin order volumes
-  getOrderVolume({
-    required Coin coinData,
-  }) async {
+  /// get coin order books
+  getOrderVolume({required Coin coinData}) async {
     await connectToBinanceServer(coinData);
 
     /// update UI
@@ -42,7 +40,7 @@ class OrderVolumeController extends GetxController {
   }
 
   /// update UI whenever a new item inserted into
-  /// order volume list
+  /// order book list
   updateOrderVolume(data) {
     /// buys list
     List<double> buys = [];
@@ -65,7 +63,7 @@ class OrderVolumeController extends GetxController {
               : asks.reduce(max);
 
           /// insert an item into
-          /// coin order volume buy list
+          /// coin order book buy list
           coinOrderVolumeBuyList.insert(
               i,
               OrderVolume(
@@ -77,7 +75,7 @@ class OrderVolumeController extends GetxController {
               ));
 
           /// insert an item into
-          /// coin order volume sell list
+          /// coin order book sell list
           coinOrderVolumeSellList.insert(
               i,
               OrderVolume(
@@ -91,13 +89,13 @@ class OrderVolumeController extends GetxController {
       }
     }
 
-    /// if coin order volume buy list length is greater than item count
+    /// if coin order book buy list length is greater than item count
     /// then delete the item at index 0 from list
     if (coinOrderVolumeBuyList.length > itemCount) {
       coinOrderVolumeBuyList.removeAt(0);
     }
 
-    /// if coin order volume sell list length is greater than item count
+    /// if coin order book sell list length is greater than item count
     /// then delete the item at index 0 from list
     if (coinOrderVolumeSellList.length > itemCount) {
       coinOrderVolumeSellList.removeAt(0);
@@ -107,7 +105,7 @@ class OrderVolumeController extends GetxController {
     update();
   }
 
-  /// connect to binance server
+  /// connect to binance websocket
   connectToBinanceServer(Coin coinData) {
     channelHome.sink.close();
     channelHome = IOWebSocketChannel.connect(
@@ -148,10 +146,26 @@ class OrderVolumeController extends GetxController {
     result.listen((event) {
       var snapshot = jsonDecode(event);
 
-      /// update order volume
+      if (coinOrderVolumeBuyList.isNotEmpty) {
+        /// if coin order book buy list length is greater than item count
+        /// then delete the item at index 0 from list
+        if (coinOrderVolumeBuyList.length > itemCount) {
+          coinOrderVolumeBuyList.removeRange(
+              itemCount, coinOrderVolumeBuyList.length);
+        }
+      }
+
+      if (coinOrderVolumeSellList.isNotEmpty) {
+        /// if coin order book sell list length is greater than item count
+        /// then delete the item at index 0 from list
+        if (coinOrderVolumeSellList.length > itemCount) {
+          coinOrderVolumeSellList.removeRange(
+              itemCount, coinOrderVolumeSellList.length);
+        }
+      }
+
+      /// update order book
       updateOrderVolume(snapshot);
     });
   }
-
-  connectToListedCoinServer() {}
 }

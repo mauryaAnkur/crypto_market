@@ -86,6 +86,8 @@ class _HomeScreenState extends State<HomeScreen> {
       intervalTextSize: 20,
       intervalUnselectedTextColor: Colors.black,
       chartBorderColor: Colors.green,
+      showToolTip: false,
+      showInterval: false,
       chartColor: LinearGradient(
        colors: [
          Colors.green.shade500.withOpacity(1),
@@ -105,13 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       toolTipBgColor: Colors.green.shade900,
       toolTipTextColor: Colors.white,
-    );
-  }
-
-  Widget orderBook() {
-    return OrderBook(
-      coinData: coinsList.elementAt(0),
-      inrRate: 77.0,
     );
   }
 

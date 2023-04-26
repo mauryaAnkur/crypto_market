@@ -43,8 +43,7 @@ Widget coinCard({
                           border: Border.all(
                               color: Colors.grey.shade400, width: 1)),
                       child: Center(
-                        child: Text(
-                            coin.name.isEmpty ? '-' : coin.name[0]),
+                        child: Text(coin.name.isEmpty ? '-' : coin.name[0]),
                       ),
                     ),
                   ),

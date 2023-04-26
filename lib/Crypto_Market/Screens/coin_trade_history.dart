@@ -52,8 +52,10 @@ class CoinTradeHistory extends StatelessWidget {
                     child: const Text(
                       "Type",
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -95,7 +97,9 @@ class CoinTradeHistory extends StatelessWidget {
                   itemCount: TradeHistoryController.to.tradeHistoryList.length,
                   itemBuilder: (BuildContext ctx, int i) {
                     return _itemCard(
-                        context, TradeHistoryController.to.tradeHistoryList[i]);
+                      context,
+                      TradeHistoryController.to.tradeHistoryList[i],
+                    );
                   },
                 ),
               ),
@@ -114,7 +118,9 @@ class CoinTradeHistory extends StatelessWidget {
           ? Colors.green.withOpacity(0.1)
           : Colors.redAccent.withOpacity(0.1),
       padding: EdgeInsets.symmetric(
-          horizontal: width * 0.03, vertical: height * 0.012),
+        horizontal: width * 0.03,
+        vertical: height * 0.012,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

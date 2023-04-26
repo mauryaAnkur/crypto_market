@@ -14,6 +14,8 @@ class CoinLineChart extends StatelessWidget {
   final Color? chartBorderColor;
   final Color? toolTipBgColor;
   final Color? toolTipTextColor;
+  final bool? showToolTip;
+  final bool? showInterval;
   final Color? intervalSelectedTextColor;
   final Color? intervalUnselectedTextColor;
   final double? intervalTextSize;
@@ -27,6 +29,8 @@ class CoinLineChart extends StatelessWidget {
     this.chartBorderColor,
     this.toolTipBgColor,
     this.toolTipTextColor,
+    this.showToolTip,
+    this.showInterval,
     this.intervalSelectedTextColor,
     this.intervalUnselectedTextColor,
     this.intervalTextSize,
@@ -54,7 +58,7 @@ class CoinLineChart extends StatelessWidget {
                             borderData: FlBorderData(show: false),
                             gridData: FlGridData(show: false),
                             lineTouchData: LineTouchData(
-                              enabled: true,
+                              enabled: showToolTip ?? true,
                               touchTooltipData: LineTouchTooltipData(
                                 tooltipBgColor:
                                     toolTipBgColor ?? Colors.green.shade50,
@@ -114,48 +118,59 @@ class CoinLineChart extends StatelessWidget {
                         ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment:
-                      intervalAlignment ?? MainAxisAlignment.spaceAround,
-                  children: [
-                    intervalButton(
-                      title: '1m',
-                      coinData: coinData,
-                      intervalSelectedTextColor: intervalSelectedTextColor,
-                      intervalUnselectedTextColor: intervalUnselectedTextColor,
-                      intervalTextSize: intervalTextSize,
-                    ),
-                    intervalButton(
-                      title: '1h',
-                      coinData: coinData,
-                      intervalSelectedTextColor: intervalSelectedTextColor,
-                      intervalUnselectedTextColor: intervalUnselectedTextColor,
-                      intervalTextSize: intervalTextSize,
-                    ),
-                    intervalButton(
-                      title: '1d',
-                      coinData: coinData,
-                      intervalSelectedTextColor: intervalSelectedTextColor,
-                      intervalUnselectedTextColor: intervalUnselectedTextColor,
-                      intervalTextSize: intervalTextSize,
-                    ),
-                    intervalButton(
-                      title: '1w',
-                      coinData: coinData,
-                      intervalSelectedTextColor: intervalSelectedTextColor,
-                      intervalUnselectedTextColor: intervalUnselectedTextColor,
-                      intervalTextSize: intervalTextSize,
-                    ),
-                    intervalButton(
-                      title: '1M',
-                      coinData: coinData,
-                      intervalSelectedTextColor: intervalSelectedTextColor,
-                      intervalUnselectedTextColor: intervalUnselectedTextColor,
-                      intervalTextSize: intervalTextSize,
-                    ),
-                  ],
+              Visibility(
+                visible: showInterval ?? true,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment:
+                        intervalAlignment ?? MainAxisAlignment.spaceAround,
+                    children: [
+                      intervalButton(
+                        title: '1m',
+                        coinData: coinData,
+                        intervalSelectedTextColor: intervalSelectedTextColor,
+                        intervalUnselectedTextColor:
+                            intervalUnselectedTextColor,
+                        intervalTextSize: intervalTextSize,
+                      ),
+                      intervalButton(
+                        title: '1h',
+                        coinData: coinData,
+                        intervalSelectedTextColor: intervalSelectedTextColor,
+                        intervalUnselectedTextColor:
+                            intervalUnselectedTextColor,
+                        intervalTextSize: intervalTextSize,
+                      ),
+                      intervalButton(
+                        title: '1d',
+                        coinData: coinData,
+                        intervalSelectedTextColor: intervalSelectedTextColor,
+                        intervalUnselectedTextColor:
+                            intervalUnselectedTextColor,
+                        intervalTextSize: intervalTextSize,
+                      ),
+                      intervalButton(
+                        title: '1w',
+                        coinData: coinData,
+                        intervalSelectedTextColor: intervalSelectedTextColor,
+                        intervalUnselectedTextColor:
+                            intervalUnselectedTextColor,
+                        intervalTextSize: intervalTextSize,
+                      ),
+                      intervalButton(
+                        title: '1M',
+                        coinData: coinData,
+                        intervalSelectedTextColor: intervalSelectedTextColor,
+                        intervalUnselectedTextColor:
+                            intervalUnselectedTextColor,
+                        intervalTextSize: intervalTextSize,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

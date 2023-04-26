@@ -7,7 +7,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../Model/coin_model.dart';
 
-
 /// coin controller
 class CoinController extends GetxController {
   static CoinController get to => Get.put(CoinController());
@@ -91,8 +90,8 @@ class CoinController extends GetxController {
     var selectedCurrencyIndex = selectedCurrencyCoins.where((element) =>
         element.symbol.toUpperCase() == coinSymbol.toUpperCase() ||
         element.symbol.toUpperCase() == '${inrPairCoins.toUpperCase()}INR');
-    var wishlistIndex = wishlistCoinsList.where((element) =>
-        element.symbol.toUpperCase() == coinSymbol.toUpperCase());
+    var wishlistIndex = wishlistCoinsList.where(
+        (element) => element.symbol.toUpperCase() == coinSymbol.toUpperCase());
 
     for (var i in index) {
       i.price = coinPrice;

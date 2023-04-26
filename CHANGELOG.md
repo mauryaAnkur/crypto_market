@@ -3,3 +3,4 @@
 
 ## 0.0.3
 * Fixed Bugs & issues.
+* New Line Chart.

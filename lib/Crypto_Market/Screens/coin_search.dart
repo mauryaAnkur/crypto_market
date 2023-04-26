@@ -5,6 +5,9 @@ import '../GetX/all_coin_getx.dart';
 import '../Model/coin_model.dart';
 import '../Widgets/coin_card.dart';
 
+///
+/// search coins from list
+///
 class CoinSearch extends StatefulWidget {
   final List<Coin> coinsList;
   final List<String> currencyList;
@@ -16,6 +19,7 @@ class CoinSearch extends StatefulWidget {
   final BorderRadius? cardPercentageBorder;
   final double? cardPercentageHeight;
   final double? cardPercentageWidth;
+  final Widget Function(Coin)? coinCardWidget;
   final Function(BuildContext, Coin)? onSearchCoinTap;
 
   const CoinSearch({
@@ -28,6 +32,7 @@ class CoinSearch extends StatefulWidget {
     this.cardPercentageBorder,
     this.cardPercentageHeight,
     this.cardPercentageWidth,
+    this.coinCardWidget,
     this.onSearchCoinTap,
   }) : super(key: key);
 
@@ -40,7 +45,6 @@ class _CoinSearchState extends State<CoinSearch> {
 
   bool sortList = false;
 
-  ///search
   final key = GlobalKey<ScaffoldState>();
   final TextEditingController _searchQuery = TextEditingController();
   bool _isSearching = false;
@@ -62,8 +66,6 @@ class _CoinSearchState extends State<CoinSearch> {
     });
   }
 
-  ///
-
   @override
   void initState() {
     CoinController.to.getCoins(widget.coinsList, null, widget.tickerList);
@@ -81,7 +83,7 @@ class _CoinSearchState extends State<CoinSearch> {
     return Scaffold(
       body: SingleChildScrollView(
         child: GetBuilder<CoinController>(
-          builder: (_) {
+          builder: (coinController) {
             return Column(
               children: [
                 SizedBox(
@@ -134,13 +136,14 @@ class _CoinSearchState extends State<CoinSearch> {
                           });
                         },
                         child: SizedBox(
-                            width: width * 0.38,
-                            child: const Text(
-                              'Coin Name',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w600),
-                            )),
+                          width: width * 0.38,
+                          child: const Text(
+                            'Coin Name',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w600),
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -161,12 +164,14 @@ class _CoinSearchState extends State<CoinSearch> {
                                 'Price',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w600),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               Icon(
                                 Icons.arrow_upward_sharp,
                                 size: 14,
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -191,12 +196,16 @@ class _CoinSearchState extends State<CoinSearch> {
                             physics: const BouncingScrollPhysics(),
                             itemCount: CoinController.to.allCoinsList.length,
                             itemBuilder: (context, index) {
-                              return coinCard(
-                                context: context,
-                                coin: CoinController.to.allCoinsList[index],
-                                inrRate: widget.inrRate,
-                                onTap: widget.onSearchCoinTap,
-                              );
+                              return widget.coinCardWidget != null
+                                  ? widget.coinCardWidget!(
+                                      coinController.allCoinsList[index])
+                                  : coinCard(
+                                      context: context,
+                                      coin:
+                                          CoinController.to.allCoinsList[index],
+                                      inrRate: widget.inrRate,
+                                      onTap: widget.onSearchCoinTap,
+                                    );
                             }),
                       ),
               ],
@@ -207,135 +216,9 @@ class _CoinSearchState extends State<CoinSearch> {
     );
   }
 
-  // /// coins card
-  // Widget itemsCard(index, Coin coin) {
-  //   double oldPrice = coin.coinLastPrice.isEmpty
-  //       ? double.parse(coin.coinPrice)
-  //       : double.parse(coin.coinLastPrice);
-  //   coin.coinLastPrice = coin.coinPrice;
-  //
-  //   final height = MediaQuery.of(context).size.height;
-  //   final width = MediaQuery.of(context).size.width;
-  //   return Column(
-  //     children: [
-  //       InkWell(
-  //         onTap: () {
-  //           widget.onSearchCoinTap!(context, coin);
-  //         },
-  //         child: Container(
-  //           margin: EdgeInsets.symmetric(vertical: height * 0.003),
-  //           padding: EdgeInsets.symmetric(
-  //               horizontal: width * 0.04, vertical: height * 0.014),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Row(
-  //                 children: [
-  //                   Image.network(
-  //                     coin.coinImage,
-  //                     height: width * 0.085,
-  //                     width: width * 0.085,
-  //                     fit: BoxFit.fill,
-  //                     errorBuilder: (context, error, stackTrace) => Container(
-  //                       height: width * 0.083,
-  //                       width: width * 0.083,
-  //                       decoration: BoxDecoration(
-  //                           shape: BoxShape.circle,
-  //                           border: Border.all(
-  //                               color: Colors.grey.shade400, width: 1)),
-  //                       child: Center(
-  //                         child: Text(
-  //                             coin.coinName.isEmpty ? '-' : coin.coinName[0]),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   SizedBox(
-  //                     width: width * 0.014,
-  //                   ),
-  //                   Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       SizedBox(
-  //                         width: width * 0.24,
-  //                         child: Row(
-  //                           children: [
-  //                             Text(
-  //                               "${coin.coinShortName} / ",
-  //                               style: const TextStyle(
-  //                                   fontSize: 14, fontWeight: FontWeight.w700),
-  //                             ),
-  //                             Text(
-  //                               coin.coinPairWith,
-  //                               style: const TextStyle(
-  //                                   fontSize: 14, fontWeight: FontWeight.w700),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                       SizedBox(
-  //                         height: height * 0.005,
-  //                       ),
-  //                       Text(
-  //                         coin.coinName,
-  //                         style: const TextStyle(fontSize: 10),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //               SizedBox(
-  //                 width: width * 0.22,
-  //                 child: Text(
-  //                   coin.coinPairWith.toLowerCase() == 'inr'
-  //                       ? (double.parse(coin.coinPrice.toString()) *
-  //                               widget.inrRate)
-  //                           .toStringAsFixed(coin.coinDecimalCurrency)
-  //                       : double.parse(coin.coinPrice.toString())
-  //                           .toStringAsFixed(coin.coinDecimalCurrency),
-  //                   textAlign: TextAlign.end,
-  //                   maxLines: 1,
-  //                   style: TextStyle(
-  //                     fontSize: 12,
-  //                     color: double.parse(coin.coinPrice) > oldPrice
-  //                         ? Colors.lightGreen
-  //                         : double.parse(coin.coinPrice) < oldPrice
-  //                             ? Colors.red
-  //                             : null,
-  //                     fontWeight: FontWeight.w700,
-  //                   ),
-  //                 ),
-  //               ),
-  //               Container(
-  //                 width: widget.cardPercentageWidth ?? width * 0.16,
-  //                 height: widget.cardPercentageHeight ?? height * 0.025,
-  //                 decoration: BoxDecoration(
-  //                   color: coin.coinPercentage.toString().startsWith('-')
-  //                       ? Colors.red
-  //                       : Colors.lightGreen,
-  //                   borderRadius:
-  //                       widget.cardPercentageBorder ?? BorderRadius.circular(0),
-  //                 ),
-  //                 padding: const EdgeInsets.all(2),
-  //                 child: Center(
-  //                     child: FittedBox(
-  //                         child: Text(
-  //                   '${coin.coinPercentage}%',
-  //                   style: const TextStyle(
-  //                       fontSize: 11,
-  //                       color: Colors.white,
-  //                       fontWeight: FontWeight.w700),
-  //                 ))),
-  //                 //child: Text(percent + '%', style: TextStyle(fontSize: 11, color: Colors.white, fontWeight: FontWeight.w700),),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  ///search
+  ///
+  /// search coins item widget
+  ///
   Widget _buildSearchList(allCoinList) {
     if (_searchText.isEmpty) {
       _isSearching = false;
@@ -395,146 +278,4 @@ class _CoinSearchState extends State<CoinSearch> {
   }
 
   ///
-
-  // /// search item card
-  // Widget searchItemsCard(index, Coin coin) {
-  //   double oldPrice = coin.coinLastPrice.isEmpty
-  //       ? double.parse(coin.coinPrice)
-  //       : double.parse(coin.coinLastPrice);
-  //   coin.coinLastPrice = coin.coinPrice;
-  //
-  //   final height = MediaQuery.of(context).size.height;
-  //   final width = MediaQuery.of(context).size.width;
-  //   return Column(
-  //     children: [
-  //       InkWell(
-  //         onTap: () {
-  //           widget.onSearchCoinTap!(context, coin);
-  //         },
-  //         child: Container(
-  //           margin: EdgeInsets.symmetric(vertical: height * 0.003),
-  //           padding: EdgeInsets.symmetric(
-  //               horizontal: width * 0.04, vertical: height * 0.014),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Row(
-  //                 children: [
-  //                   Image.network(
-  //                     coin.coinImage,
-  //                     height: width * 0.085,
-  //                     width: width * 0.085,
-  //                     fit: BoxFit.fill,
-  //                     errorBuilder: (context, error, stackTrace) => Container(
-  //                       height: width * 0.083,
-  //                       width: width * 0.083,
-  //                       decoration: BoxDecoration(
-  //                           shape: BoxShape.circle,
-  //                           border: Border.all(
-  //                               color: Colors.grey.shade400, width: 1)),
-  //                       child: Center(
-  //                         child: Text(
-  //                             coin.coinName.isEmpty ? '-' : coin.coinName[0]),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   SizedBox(
-  //                     width: width * 0.014,
-  //                   ),
-  //                   Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       SizedBox(
-  //                         width: width * 0.24,
-  //                         child: Row(
-  //                           children: [
-  //                             Text(
-  //                               "${coin.coinShortName} / ",
-  //                               style: TextStyle(
-  //                                   fontSize: 14,
-  //                                   color: Theme.of(context)
-  //                                       .textTheme
-  //                                       .bodyText1!
-  //                                       .color,
-  //                                   fontWeight: FontWeight.w700),
-  //                             ),
-  //                             Text(
-  //                               coin.coinPairWith,
-  //                               style: TextStyle(
-  //                                   fontSize: 14,
-  //                                   color: Theme.of(context)
-  //                                       .textTheme
-  //                                       .bodyText2!
-  //                                       .color,
-  //                                   fontWeight: FontWeight.w700),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                       SizedBox(
-  //                         height: height * 0.005,
-  //                       ),
-  //                       Text(
-  //                         coin.coinName,
-  //                         style: TextStyle(
-  //                             color:
-  //                                 Theme.of(context).textTheme.bodyText2!.color,
-  //                             fontSize: 10),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //               SizedBox(
-  //                 width: width * 0.22,
-  //                 child: Text(
-  //                   coin.coinPairWith.toLowerCase() == 'inr'
-  //                       ? (double.parse(coin.coinPrice.toString()) *
-  //                               widget.inrRate)
-  //                           .toStringAsFixed(coin.coinDecimalCurrency)
-  //                       : double.parse(coin.coinPrice.toString())
-  //                           .toStringAsFixed(coin.coinDecimalCurrency),
-  //                   textAlign: TextAlign.end,
-  //                   maxLines: 1,
-  //                   style: TextStyle(
-  //                     fontSize: 12,
-  //                     color: double.parse(coin.coinPrice) > oldPrice
-  //                         ? Colors.lightGreen
-  //                         : double.parse(coin.coinPrice) < oldPrice
-  //                             ? Colors.red
-  //                             : Theme.of(context).textTheme.bodyText1!.color,
-  //                     fontWeight: FontWeight.w700,
-  //                   ),
-  //                 ),
-  //               ),
-  //               Container(
-  //                 width: widget.cardPercentageWidth ?? width * 0.16,
-  //                 height: widget.cardPercentageHeight ?? height * 0.025,
-  //                 decoration: BoxDecoration(
-  //                   color: coin.coinPercentage.toString().startsWith('-')
-  //                       ? Colors.red
-  //                       : Colors.lightGreen,
-  //                   borderRadius:
-  //                       widget.cardPercentageBorder ?? BorderRadius.circular(0),
-  //                 ),
-  //                 padding: const EdgeInsets.all(2),
-  //                 child: Center(
-  //                     child: FittedBox(
-  //                         child: Text(
-  //                   '${coin.coinPercentage}%',
-  //                   style: const TextStyle(
-  //                       fontSize: 11,
-  //                       color: Colors.white,
-  //                       fontWeight: FontWeight.w700),
-  //                 ))),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-  //
-  // ///
 }
