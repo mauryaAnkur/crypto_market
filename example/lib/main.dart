@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 6),
-        child: coinLineChart(),
+        child: orderVolume(),
       ),
     );
   }
