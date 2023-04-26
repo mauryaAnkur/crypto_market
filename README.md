@@ -30,7 +30,7 @@ AllCoin(
 
 ## Candle Chart
 ````
-CoinGraph(
+CandleChart(
       coinData: coinsList.elementAt(0),
       listedCoinGraphUrl: 'http://node.demo.com/orders/getohlc?symbol=TSTUSDT&interval=1m',
       inrRate: 77.0,
@@ -39,7 +39,7 @@ CoinGraph(
 
 ## Line Chart
 ````
-CoinLineChart(
+LineChart(
       coinData: coinsList.elementAt(4),
       inrRate: 77.0,
       intervalSelectedTextColor: Colors.red,

@@ -10,8 +10,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../Model/coin_model.dart';
 
-class CoinGraphController extends GetxController {
-  static CoinGraphController get to => Get.put(CoinGraphController());
+class ChartController extends GetxController {
+  static ChartController get to => Get.put(ChartController());
 
   List<KLineEntity> kChartCandles = <KLineEntity>[].obs;
   List<FlSpot> lineChart = <FlSpot>[].obs;

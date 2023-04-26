@@ -1,4 +1,4 @@
-import 'package:crypto_market/Crypto_Market/GetX/coin_graph_getx.dart';
+import 'package:crypto_market/Crypto_Market/GetX/coin_chart_getx.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:k_chart/chart_style.dart';
@@ -8,7 +8,7 @@ import 'package:k_chart/k_chart_widget.dart';
 import '../Model/coin_model.dart';
 import '../Widgets/interval_button.dart';
 
-class CoinGraph extends StatelessWidget {
+class CandleChart extends StatelessWidget {
   final Coin coinData;
   final double inrRate;
   final Color backgroundColor;
@@ -26,7 +26,7 @@ class CoinGraph extends StatelessWidget {
   final double? intervalTextSize;
   final MainAxisAlignment? intervalAlignment;
 
-  CoinGraph({
+  CandleChart({
     Key? key,
     required this.coinData,
     required this.inrRate,
@@ -51,17 +51,17 @@ class CoinGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CoinGraphController.to.getCandles(
+    ChartController.to.getCandles(
       coinData: coinData,
       interval: '1m',
     );
-    CoinGraphController.to.inrRate = inrRate;
+    ChartController.to.inrRate = inrRate;
 
-    return GetBuilder<CoinGraphController>(
+    return GetBuilder<ChartController>(
       builder: (_) {
         return Column(
           children: [
-            CoinGraphController.to.kChartCandles.isEmpty
+            ChartController.to.kChartCandles.isEmpty
                 ? const Center(
                     child: CupertinoActivityIndicator(),
                   )
@@ -69,7 +69,7 @@ class CoinGraph extends StatelessWidget {
                     child: Container(
                       color: backgroundColor,
                       child: KChartWidget(
-                        CoinGraphController.to.kChartCandles,
+                        ChartController.to.kChartCandles,
                         chartStyle,
                         chartColors,
                         isLine: isLine,

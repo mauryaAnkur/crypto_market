@@ -1,5 +1,5 @@
-import 'package:crypto_market/Crypto_Market/GetX/coin_graph_getx.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:crypto_market/Crypto_Market/GetX/coin_chart_getx.dart';
+import 'package:fl_chart/fl_chart.dart' as chart;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import '../Model/coin_model.dart';
 import '../Widgets/interval_button.dart';
 
-class CoinLineChart extends StatelessWidget {
+class LineChart extends StatelessWidget {
   final Coin coinData;
   final double inrRate;
   final Gradient? chartColor;
@@ -21,7 +21,7 @@ class CoinLineChart extends StatelessWidget {
   final double? intervalTextSize;
   final MainAxisAlignment? intervalAlignment;
 
-  const CoinLineChart({
+  const LineChart({
     Key? key,
     required this.coinData,
     required this.inrRate,
@@ -39,13 +39,13 @@ class CoinLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CoinGraphController.to.inrRate = inrRate;
-    CoinGraphController.to.getCandles(
+    ChartController.to.inrRate = inrRate;
+    ChartController.to.getCandles(
       coinData: coinData,
       interval: '1h',
     );
     return Scaffold(
-      body: GetBuilder<CoinGraphController>(
+      body: GetBuilder<ChartController>(
         builder: (chartController) {
           return Column(
             children: [
@@ -53,20 +53,20 @@ class CoinLineChart extends StatelessWidget {
                 child: SizedBox(
                   child: chartController.lineChart.isEmpty
                       ? const CupertinoActivityIndicator()
-                      : LineChart(
-                          LineChartData(
-                            borderData: FlBorderData(show: false),
-                            gridData: FlGridData(show: false),
-                            lineTouchData: LineTouchData(
+                      : chart.LineChart(
+                          chart.LineChartData(
+                            borderData: chart.FlBorderData(show: false),
+                            gridData: chart.FlGridData(show: false),
+                            lineTouchData: chart.LineTouchData(
                               enabled: showToolTip ?? true,
-                              touchTooltipData: LineTouchTooltipData(
+                              touchTooltipData: chart.LineTouchTooltipData(
                                 tooltipBgColor:
                                     toolTipBgColor ?? Colors.green.shade50,
                                 tooltipRoundedRadius: 8,
                                 fitInsideHorizontally: true,
                                 getTooltipItems: (spots) => spots
                                     .map(
-                                      (spot) => LineTooltipItem(
+                                      (spot) => chart.LineTooltipItem(
                                         '${coinData.pairWith.toUpperCase()} '
                                         '${spot.y.toStringAsFixed(2)}\n'
                                         '${DateTime.fromMicrosecondsSinceEpoch(spot.x.toInt() * 1000)}',
@@ -82,12 +82,12 @@ class CoinLineChart extends StatelessWidget {
                               ),
                             ),
                             lineBarsData: [
-                              LineChartBarData(
+                              chart.LineChartBarData(
                                 spots: chartController.lineChart,
                                 isCurved: true,
                                 barWidth: 2,
                                 color: chartBorderColor ?? Colors.green,
-                                belowBarData: BarAreaData(
+                                belowBarData: chart.BarAreaData(
                                   show: true,
                                   gradient: chartColor ??
                                       LinearGradient(
@@ -100,17 +100,17 @@ class CoinLineChart extends StatelessWidget {
                                         end: Alignment.bottomCenter,
                                       ),
                                 ),
-                                aboveBarData: BarAreaData(
+                                aboveBarData: chart.BarAreaData(
                                   show: true,
                                   color: Colors.transparent,
                                   applyCutOffY: false,
                                 ),
-                                dotData: FlDotData(
+                                dotData: chart.FlDotData(
                                   show: false,
                                 ),
                               ),
                             ],
-                            titlesData: FlTitlesData(show: false),
+                            titlesData: chart.FlTitlesData(show: false),
                           ),
                           swapAnimationDuration:
                               const Duration(milliseconds: 150),

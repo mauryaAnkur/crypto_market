@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 6),
-        child: orderVolume(),
+        child: allCoin(),
       ),
     );
   }
@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       currencyTabHeight: 100,
       showHeading: true,
       inrRate: 77.0,
-      // coinCardWidget: (coin){return Text(coin.price);},
       onWishlistError: Center(
         child: Text(
           'Wishlist not found!!',
@@ -68,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget coinGraph() {
-    return CoinGraph(
+  Widget candleChart() {
+    return CandleChart(
       coinData: coinsList.elementAt(0),
       inrRate: 77.0,
       intervalSelectedTextColor: Colors.red,
@@ -78,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget coinLineChart() {
-    return CoinLineChart(
+  Widget lineChart() {
+    return LineChart(
       coinData: coinsList.elementAt(4),
       inrRate: 77.0,
       intervalSelectedTextColor: Colors.red,

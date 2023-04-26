@@ -19,7 +19,7 @@ Widget coinCard({
     children: [
       InkWell(
         onTap: () {
-          onTap;
+          onTap!(context, coin);
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: height * 0.003),
